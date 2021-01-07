@@ -18,7 +18,7 @@ public class PlayerSimulation
 
     public void MoveForward(float time)
     {
-        transform.LocalPosition = transform.LocalPosition + transform.Forward * movementSpeed * time;
+        transform.LocalPosition = transform.LocalPosition + transform.Forward.normalized * movementSpeed * time;
     }
 
     public void Rotate(Vector3 direction, float time)

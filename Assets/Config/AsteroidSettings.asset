@@ -9,10 +9,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0ac6dcd659e5f87478b16796d92713c4, type: 3}
-  m_Name: PlayerSettings
+  m_Script: {fileID: 11500000, guid: aa31ee99c11839247a428a6a43b0bcb3, type: 3}
+  m_Name: AsteroidSettings
   m_EditorClassIdentifier: 
-  <MovementSpeed>k__BackingField: 3
-  <RotationSpeed>k__BackingField: 100
-  <LifeLosePerSecond>k__BackingField: 20
-  <StartingLife>k__BackingField: 1000
+  <AsteroidObjects>k__BackingField:
+  - {fileID: 0}
+  - {fileID: 0}
+  <SpawnProbabilities>k__BackingField: 0000000000000000

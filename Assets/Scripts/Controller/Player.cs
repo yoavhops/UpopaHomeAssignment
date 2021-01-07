@@ -10,38 +10,49 @@ public class Player : MonoBehaviour, ILocalTransformAdapter
     [field: SerializeField]
     public PlayerSettings PlayerSettings { get; private set; }
     [SerializeField]
-    private PlayerShot shotGameObject;
-    private PlayerLogic playerLogic;
+    private Shot shotGameObject;
+    [SerializeField]
+    private HealthBar health;
+
     private PlayerSimulation playerSimulation;
-
-
+    private Cyclical cyclical;
     // Start is called before the first frame update
     void Start()
     {
+        cyclical = GetComponent<Cyclical>();
+        if (cyclical != null && cyclical.IsMirrorObject)
+        {
+            enabled = false;
+            return;
+        }
         playerSimulation = new PlayerSimulation(this, PlayerSettings);
-        playerLogic = new PlayerLogic();
+
+        health.BarValue = 1000;
     }
 
     // Update is called once per frame
     void Update()
     {
+        var deltaTime = Time.deltaTime;
         if (Input.GetKey(KeyCode.W))
         {
-            playerSimulation.MoveForward(Time.deltaTime);
+            playerSimulation.MoveForward(deltaTime);
         }
         if (Input.GetKey(KeyCode.A))
         {
-            playerSimulation.Rotate(Vector3.forward, Time.deltaTime);
+            playerSimulation.Rotate(Vector3.forward, deltaTime);
         }
         else if (Input.GetKey(KeyCode.D))
         {
-            playerSimulation.Rotate(Vector3.back, Time.deltaTime);
+            playerSimulation.Rotate(Vector3.back, deltaTime);
         }
-        
+
         if (Input.GetKeyDown(KeyCode.Space))
         {
             Shoot();
         }
+
+        health.BarValue -= deltaTime * PlayerSettings.LifeLosePerSecond / 10;
     }
 
 
@@ -53,18 +64,25 @@ public class Player : MonoBehaviour, ILocalTransformAdapter
 
     public void Shoot()
     {
-        PlayerShot shot = Instantiate(shotGameObject, transform.position, transform.rotation);
+
+        Shot shot = Instantiate(shotGameObject, transform.position, transform.rotation);
         Floatable floatingShot = shot.GetComponent<Floatable>();
         floatingShot.Direction = transform.up;
+
     }
 
 
     public void OnTriggerEnter(Collider other)
     {
-        Shotable willKillMe = other.gameObject.GetComponent<Shotable>();
+        Shootable willKillMe = other.gameObject.GetComponent<Shootable>();
         if (willKillMe != null)
         {
+            // Player Destroyed
             gameObject.SetActive(false);
+            if (cyclical != null)
+            {
+                cyclical.Mirror.SetActive(false);
+            }
         }
     }
 }

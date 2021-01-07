@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerShot : MonoBehaviour
+public class Shot : MonoBehaviour
 {
     // Start is called before the first frame update
     void Start()
@@ -18,7 +18,7 @@ public class PlayerShot : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        Shotable shotable = other.gameObject.GetComponent<Shotable>();
+        Shootable shotable = other.gameObject.GetComponent<Shootable>();
         if (shotable != null)
         {
             Destroy(gameObject);    

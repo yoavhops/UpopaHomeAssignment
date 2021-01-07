@@ -22,6 +22,6 @@ public class Floatable : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        transform.position += Direction * Time.deltaTime;
+        transform.position += Direction.normalized * floatSpeed * Time.deltaTime;
     }
 }

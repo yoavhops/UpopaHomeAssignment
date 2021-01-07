@@ -10,4 +10,8 @@ public class PlayerSettings : ScriptableObject
     public float MovementSpeed { get; private set; }
     [field: SerializeField]
     public float RotationSpeed { get; private set; }
+    [field: SerializeField]
+    public float LifeLosePerSecond { get; private set; }
+    [field: SerializeField]
+    public float StartingLife { get; private set; }
 }
