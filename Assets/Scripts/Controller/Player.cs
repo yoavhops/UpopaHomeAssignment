@@ -9,6 +9,8 @@ public class Player : MonoBehaviour, ILocalTransformAdapter
     public Vector3 Forward { get => transform.up; }
     [field: SerializeField]
     public PlayerSettings PlayerSettings { get; private set; }
+    [SerializeField]
+    private PlayerShot shotGameObject;
     private PlayerLogic playerLogic;
     private PlayerSimulation playerSimulation;
 
@@ -35,11 +37,34 @@ public class Player : MonoBehaviour, ILocalTransformAdapter
         {
             playerSimulation.Rotate(Vector3.back, Time.deltaTime);
         }
+        
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            Shoot();
+        }
     }
 
 
     public void Move(Vector3 direction, float time)
     {
 
+    }
+
+
+    public void Shoot()
+    {
+        PlayerShot shot = Instantiate(shotGameObject, transform.position, transform.rotation);
+        Floatable floatingShot = shot.GetComponent<Floatable>();
+        floatingShot.Direction = transform.up;
+    }
+
+
+    public void OnTriggerEnter(Collider other)
+    {
+        Shotable willKillMe = other.gameObject.GetComponent<Shotable>();
+        if (willKillMe != null)
+        {
+            gameObject.SetActive(false);
+        }
     }
 }

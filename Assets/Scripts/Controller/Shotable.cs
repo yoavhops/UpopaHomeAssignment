@@ -2,27 +2,28 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerShot : MonoBehaviour
+public class Shotable : MonoBehaviour
 {
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        Shotable shotable = other.gameObject.GetComponent<Shotable>();
-        if (shotable != null)
+        PlayerShot shot = other.gameObject.GetComponent<PlayerShot>();
+        if (shot != null)
         {
-            Destroy(gameObject);    
-
+            Destroy(gameObject);
+            return;
         }
+
     }
 }
