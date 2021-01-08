@@ -3,15 +3,19 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public abstract class Reward : MonoBehaviour
+namespace Supersonic
 {
-    [SerializeField]
-    private Button clickToReward;
-    
-
-    protected virtual void Start()
+    public abstract class Reward : MonoBehaviour
     {
-        clickToReward.onClick.AddListener(() =>  Award());
+        public Shot Cause;
+        [SerializeField]
+        private Button clickToReward;
+
+
+        protected virtual void Start()
+        {
+            clickToReward.onClick.AddListener(() => Award());
+        }
+        abstract public void Award();
     }
-    abstract public void Award();
 }

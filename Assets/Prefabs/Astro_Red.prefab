@@ -157,3 +157,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Cyclical: {fileID: 0}
+  settings: {fileID: 11400000, guid: f8f447d623215824aac7e5ebbfc90a41, type: 2}

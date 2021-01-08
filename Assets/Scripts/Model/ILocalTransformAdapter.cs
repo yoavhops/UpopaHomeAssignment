@@ -2,9 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public interface ILocalTransformAdapter 
+namespace Supersonic
 {
-    Vector3 LocalPosition { get; set; }
-    Quaternion LocalRotation { get; set; }
-    Vector3 Forward { get; }
+    public interface ILocalTransformAdapter
+    {
+        Vector3 LocalPosition { get; set; }
+        Quaternion LocalRotation { get; set; }
+        Vector3 Forward { get; }
+    }
 }

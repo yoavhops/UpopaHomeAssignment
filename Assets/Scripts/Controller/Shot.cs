@@ -1,28 +1,27 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
-public class Shot : MonoBehaviour
+namespace Supersonic
 {
-    // Start is called before the first frame update
-    void Start()
+    public class Shot : MonoBehaviour
     {
+        public Player FiredBy;
         
-    }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        Shootable shotable = other.gameObject.GetComponent<Shootable>();
-        if (shotable != null)
+        private void OnTriggerEnter(Collider other)
         {
-            Destroy(gameObject);    
-
+            Shootable shootable = other.gameObject.GetComponent<Shootable>();
+            if (shootable != null)
+            {
+                Destroy(gameObject);
+                return;
+            }
+            Border border = other.gameObject.GetComponent<Border>();
+            if (border != null)
+            {
+                Destroy(gameObject);
+                return;
+            }
         }
     }
 }

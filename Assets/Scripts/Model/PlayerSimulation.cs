@@ -2,28 +2,34 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerSimulation
+namespace Supersonic
 {
-    private ILocalTransformAdapter transform;
-    private float movementSpeed;
-    private float rotationSpeed;
-    private Vector3 torque;
-    
-   public PlayerSimulation(ILocalTransformAdapter transformAdapter, PlayerSettings settings)
+    public class PlayerSimulation
     {
-        movementSpeed = settings.MovementSpeed;
-        rotationSpeed = settings.RotationSpeed;
-        transform = transformAdapter;
-    }
+        private ILocalTransformAdapter transform;
+        private float movementSpeed;
+        private float rotationSpeed;
+        private Vector3 torque;
 
-    public void MoveForward(float time)
-    {
-        transform.LocalPosition = transform.LocalPosition + transform.Forward.normalized * movementSpeed * time;
-    }
 
-    public void Rotate(Vector3 direction, float time)
-    {
-        torque += direction * time;
-        transform.LocalRotation = Quaternion.AngleAxis(rotationSpeed * time, direction) * transform.LocalRotation;
+        public PlayerSimulation(ILocalTransformAdapter transformAdapter, PlayerSettings settings)
+        {
+            movementSpeed = settings.MovementSpeed;
+            rotationSpeed = settings.RotationSpeed;
+            transform = transformAdapter;
+        }
+
+
+        public void MoveForward(float time)
+        {
+            transform.LocalPosition = transform.LocalPosition + transform.Forward.normalized * movementSpeed * time;
+        }
+
+
+        public void Rotate(Vector3 direction, float time)
+        {
+            torque += direction * time;
+            transform.LocalRotation = Quaternion.AngleAxis(rotationSpeed * time, direction) * transform.LocalRotation;
+        }
     }
 }

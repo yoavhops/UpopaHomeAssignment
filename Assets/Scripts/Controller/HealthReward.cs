@@ -2,16 +2,19 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class HealthReward : Reward
+namespace Supersonic
 {
-    [field: SerializeField]
-    public float HealthAward { get; private set; }
-    [field: SerializeField]
-    public Player DroppedFor { get; set; }
-    public override void Award()
+    public class HealthReward : Reward
     {
-        DroppedFor.AwardHealth(this);
-    }
+        [field: SerializeField]
+        public float HealthAward { get; private set; }
+        [field: SerializeField]
+        public Player DroppedFor { get; set; }
 
-    
+
+        public override void Award()
+        {
+            DroppedFor.AwardHealth(this);
+        }
+    }
 }

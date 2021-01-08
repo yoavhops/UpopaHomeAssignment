@@ -1,43 +1,41 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
-public class Shootable : MonoBehaviour
+namespace Supersonic
 {
-
-    public Cyclical Cyclical;
-    // Start is called before the first frame update
-    void Start()
+    public class Shootable : MonoBehaviour
     {
-        Cyclical = GetComponent<Cyclical>();
-    }
+        public delegate void ShootableShot(Shootable wasShot, Shot shot);
+        public event ShootableShot OnShotEvent;
+        public Cyclical Cyclical;
+        
 
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
-
-    virtual protected void OnShot(Shot shot)
-    {
-
-        gameObject.SetActive(false);
-        if (Cyclical != null)
+        void Start()
         {
-            Cyclical.Mirror.SetActive(false);
-        }
-        return;
-    }
-
-
-    private void OnTriggerEnter(Collider other)
-    {
-        Shot shot = other.gameObject.GetComponent<Shot>();
-        if (shot != null)
-        {
-            OnShot(shot);
+            Cyclical = GetComponent<Cyclical>();
         }
 
+
+        virtual public void OnShot(Shot shot)
+        {
+            gameObject.SetActive(false);
+            if (Cyclical != null && Cyclical.gameObject.activeSelf)
+            {
+                Cyclical.Mirror.GetComponent<Shootable>().OnShot(shot);
+                Cyclical.Mirror.SetActive(false);
+            }
+            OnShotEvent?.Invoke(this, shot);
+            return;
+        }
+
+
+        private void OnTriggerEnter(Collider other)
+        {
+            Shot shot = other.gameObject.GetComponent<Shot>();
+            if (shot != null)
+            {
+                OnShot(shot);
+            }
+        }
     }
 }

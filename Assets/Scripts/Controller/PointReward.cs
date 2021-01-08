@@ -2,17 +2,18 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PointReward : Reward
+namespace Supersonic
 {
-    [field: SerializeField]
-    public int PointsAward { get; private set; }
-    [field: SerializeField]
-    public Player DroppedFor { get; set; }
-    public override void Award()
+    public class PointReward : Reward
     {
-        DroppedFor.AwardPoints(this);
-        Destroy(gameObject);
-    }
+        [field: SerializeField]
+        public int PointsAward { get; private set; }
 
-    
+
+        public override void Award()
+        {
+            Cause.FiredBy.AwardPoints(this);
+            Destroy(gameObject);
+        }
+    }
 }

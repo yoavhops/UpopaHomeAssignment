@@ -1,24 +1,29 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+
 namespace Supersonic
 {
     public class Lootable : Shootable
     {
+        public Transform RewardParent;
         [SerializeField]
-        private Asteroids asteroids;
-        public Loot loot;
-        protected override void OnShot(Shot shot)
+        private Loot loot;
+
+
+        public override void OnShot(Shot shot)
         {
             base.OnShot(shot);
-            Loot();
+            Loot(shot);
         }
 
-        private void Loot()
+
+        private void Loot(Shot shot)
         {
-            foreach (var reward in loot.rewards)
+            foreach (var rewardPrefab in loot.rewards)
             {
-                Instantiate(reward, transform.position, transform.rotation, asteroids.transform);
+                Reward reward = Instantiate(rewardPrefab, Camera.main.WorldToScreenPoint(transform.position), Quaternion.identity, RewardParent);
+                reward.Cause = shot;
             }
         }
     }

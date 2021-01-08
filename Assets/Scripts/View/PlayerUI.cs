@@ -2,31 +2,33 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-
-public class PlayerUI : MonoBehaviour
+namespace Supersonic
 {
-    [SerializeField]
-    private Text points;
-    
-    [SerializeField]
-    private HealthBar health;
-    public void Setup(Player player)
+    public class PlayerUI : MonoBehaviour
     {
-        player.PointsChangedEvent += OnPointsChanged;
-        player.HealthChangedEvent += OnHealthChanged;
-        OnPointsChanged(player.Points);
-        OnHealthChanged(player.Health);
+        [SerializeField]
+        private Text points;
+
+        [SerializeField]
+        private HealthBar health;
+        private float playerStartingHealth;
+        public void Setup(Player player)
+        {
+            player.PointsChangedEvent += OnPointsChanged;
+            player.HealthChangedEvent += OnHealthChanged;
+            playerStartingHealth = player.PlayerSettings.StartingLife;
+
+        }
+
+        private void OnPointsChanged(int amount)
+        {
+            points.text = $"Score\n{amount}";
+        }
+
+        private void OnHealthChanged(float amount)
+        {
+            health.BarValue = amount * 100 / playerStartingHealth ;
+        }
 
     }
-
-    private void OnPointsChanged(int amount)
-    {
-        points.text = $"Score\n{amount}";
-    }
-
-    private void OnHealthChanged(float amount)
-    {
-        health.BarValue = amount;
-    }
-    
 }

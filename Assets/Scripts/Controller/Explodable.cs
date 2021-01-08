@@ -2,17 +2,32 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Explodable : Shootable
+namespace Supersonic
 {
-
-    protected override void OnShot(Shot shot)
+    public class Explodable : Shootable
     {
-        base.OnShot(shot);
-        Explode();
-    }
+        [SerializeField]
+        private AsteroidSettings settings;
 
-    private void Explode()
-    {
-        
+
+        public override void OnShot(Shot shot)
+        {
+            base.OnShot(shot);
+            Explode(shot);
+        }
+
+
+        private void Explode(Shot shot)
+        {
+            var collidesWith = Physics.OverlapSphere(transform.position, settings.AsteroidExplosionRadius);
+            for (int i = 0; i < collidesWith.Length; i++)
+            {
+                var shootable = collidesWith[i].gameObject.GetComponent<Shootable>();
+                if (shootable != null)
+                {
+                    shootable.OnShot(shot);
+                }
+            }
+        }
     }
 }
