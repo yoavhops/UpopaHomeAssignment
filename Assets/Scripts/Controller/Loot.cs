@@ -2,17 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Loot : MonoBehaviour
+[CreateAssetMenu(fileName = "Loot", menuName = "Asteroids/Loot", order = 1)]
+public class Loot : ScriptableObject
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    public List<Reward> rewards;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+   
 }

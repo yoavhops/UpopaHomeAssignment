@@ -12,7 +12,8 @@ namespace Supersonic
 
         public GameState State { get; private set; }
         public AsteroidSettings Settings;
-
+        [field: SerializeField]
+        public List<Player> Players { get; private set; }
         // Start is called before the first frame update
         void Start()
         {

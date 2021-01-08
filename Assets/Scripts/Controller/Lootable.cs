@@ -1,17 +1,25 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
-public class Lootable : Shootable
+namespace Supersonic
 {
-    protected override void OnShot(Shot shot)
+    public class Lootable : Shootable
     {
-        base.OnShot(shot);
-        Loot();
-    }
+        [SerializeField]
+        private Asteroids asteroids;
+        public Loot loot;
+        protected override void OnShot(Shot shot)
+        {
+            base.OnShot(shot);
+            Loot();
+        }
 
-    private void Loot()
-    {
-
+        private void Loot()
+        {
+            foreach (var reward in loot.rewards)
+            {
+                Instantiate(reward, transform.position, transform.rotation, asteroids.transform);
+            }
+        }
     }
 }

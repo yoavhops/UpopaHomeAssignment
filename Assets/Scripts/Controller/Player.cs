@@ -9,10 +9,16 @@ public class Player : MonoBehaviour, ILocalTransformAdapter
     public Vector3 Forward { get => transform.up; }
     [field: SerializeField]
     public PlayerSettings PlayerSettings { get; private set; }
+    public delegate void PointsChanged(int points);
+    public delegate void HealthChanged(float health);
+    public event PointsChanged PointsChangedEvent;
+    public event HealthChanged HealthChangedEvent;
+    public int Points { get => points; set { points = value; PointsChangedEvent(points); } }
+    public float Health { get => health; set { health = value; HealthChangedEvent(health); } }
     [SerializeField]
     private Shot shotGameObject;
-    [SerializeField]
-    private HealthBar health;
+    private float health = 1000;
+    private int points = 0;
 
     private PlayerSimulation playerSimulation;
     private Cyclical cyclical;
@@ -27,7 +33,7 @@ public class Player : MonoBehaviour, ILocalTransformAdapter
         }
         playerSimulation = new PlayerSimulation(this, PlayerSettings);
 
-        health.BarValue = 1000;
+        
     }
 
     // Update is called once per frame
@@ -52,7 +58,7 @@ public class Player : MonoBehaviour, ILocalTransformAdapter
             Shoot();
         }
 
-        health.BarValue -= deltaTime * PlayerSettings.LifeLosePerSecond / 10;
+        Health -= deltaTime * PlayerSettings.LifeLosePerSecond / 10;
     }
 
 
@@ -84,5 +90,15 @@ public class Player : MonoBehaviour, ILocalTransformAdapter
                 cyclical.Mirror.SetActive(false);
             }
         }
+    }
+
+    public void AwardPoints(PointReward reward)
+    {
+        Points += reward.PointsAward;
+    }
+
+    public void AwardHealth(HealthReward reward)
+    {
+        Health += reward.HealthAward;
     }
 }

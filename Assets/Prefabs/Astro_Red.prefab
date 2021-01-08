@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 950589191}
   - component: {fileID: 950589189}
   - component: {fileID: 950589190}
-  - component: {fileID: 950589192}
+  - component: {fileID: 3995077522932942999}
   m_Layer: 0
   m_Name: Astro_Red
   m_TagString: Untagged
@@ -142,9 +142,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Mirror: {fileID: 0}
   Playground: {fileID: 0}
-  IsMirrorObject: 0
+  IsMirrorObject: 1
   <Show>k__BackingField: 0
---- !u!114 &950589192
+--- !u!114 &3995077522932942999
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -153,7 +153,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 8345035825226964509}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7d5fdb85595bde047890ce749d91a2eb, type: 3}
+  m_Script: {fileID: 11500000, guid: 665e64e18481bd545ba758319d1a69f9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   Cyclical: {fileID: 0}
