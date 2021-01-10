@@ -85,10 +85,7 @@ namespace Supersonic
         }
 
 
-        public void Move(Vector3 direction, float time)
-        {
-
-        }
+        
 
 
         public void Shoot()
@@ -118,7 +115,6 @@ namespace Supersonic
                 else
                 {
                     Health = 0;
-
                 }
             }
         }

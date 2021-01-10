@@ -11,9 +11,9 @@ namespace Supersonic
         private Loot loot;
 
 
-        public override void OnShot(Shot shot)
+        public override void WasShot(Shot shot)
         {
-            base.OnShot(shot);
+            base.WasShot(shot);
             Loot(shot);
         }
 
@@ -21,7 +21,7 @@ namespace Supersonic
         private void Loot(Shot shot)
         {
             int index = Random.Range(0, loot.Rewards.Count);
-             Reward reward = Instantiate(loot.Rewards[index], Camera.main.WorldToScreenPoint(transform.position), Quaternion.identity, RewardParent);
+            Reward reward = Instantiate(loot.Rewards[index], Camera.main.WorldToScreenPoint(transform.position), Quaternion.identity, RewardParent);
             reward.Cause = shot;
         }
     }

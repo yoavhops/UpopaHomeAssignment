@@ -8,12 +8,11 @@ namespace Supersonic
     public class Cyclical : MonoBehaviour
     {
         public GameObject Mirror;
-        public MeshRenderer Playground;
+        public Playground Playground;
         public bool IsMirrorObject;
         [field: SerializeField]
         public bool Show { get; private set; }
-        public Vector3 Middle;
-        private Vector3 playgroundBox, height, width, middle, margin = new Vector3(1f, 1f, 0);
+        private Vector3 height, width, margin, middle;
         private HashSet<Boundary> boundariesInContact = new HashSet<Boundary>();
 
 
@@ -24,7 +23,6 @@ namespace Supersonic
             {
                 gameObject.name += "-Mirror";
             }
-
         }
 
 
@@ -33,14 +31,11 @@ namespace Supersonic
             if (!IsMirrorObject)
             {
                 Mirror.SetActive(Show);
-                playgroundBox = Playground.bounds.size;
             }
-            height = new Vector3(0, playgroundBox.y, 0);
-            width = new Vector3(playgroundBox.x, 0, 0);
-            middle = Playground.transform.position;
-            middle.z = 0;
-            middle = new Vector3(0, 1f, 0); ;
-            Debug.Log(middle);
+            height = new Vector3(0, Playground.Size.y, 0);
+            width = new Vector3(Playground.Size.x, 0, 0);
+            margin = Playground.Margin;
+            middle = Playground.Middle;
         }
 
 
@@ -48,14 +43,11 @@ namespace Supersonic
         {
             if (!IsMirrorObject)
             {
-
-
                 if (UpdateBoundaries())
                 {
                     transform.position = MirrorPosition();
                     Show = false;
                     boundariesInContact.Clear();
-                    
                 }
 
                 if (Show)
@@ -64,8 +56,8 @@ namespace Supersonic
                     {
                         throw new ArgumentOutOfRangeException($"Illeal amount of boundaries to mirror over the cyclical range: {boundariesInContact.Count}");
                     }
-                    Mirror.SetActive(true);
                     Debug.Log($"{gameObject.name} {string.Join(" ", boundariesInContact)}");
+                    Mirror.SetActive(true);
                     Mirror.transform.position = MirrorPosition();
                     Mirror.transform.rotation = transform.rotation;
                 }
@@ -82,6 +74,7 @@ namespace Supersonic
             boundariesInContact.Clear();
             bool moveToMirror = false;
             Vector3 position = transform.position;
+
             if (position.x > middle.x + width.x / 2)
             {
                 if (position.x > middle.x + width.x / 2 + margin.x)
@@ -118,13 +111,12 @@ namespace Supersonic
             return moveToMirror;
         }
 
+
         private Vector3 MirrorPosition()
         {
             Vector3 position = transform.position;
             foreach (Boundary boundary in boundariesInContact)
             {
-                //Vector3 height = new Vector3(0, Screen.height, 0), width = new Vector3(Screen.width, 0, 0); Maybe?
-
                 switch (boundary)
                 {
                     case Boundary.Upper:
@@ -145,6 +137,5 @@ namespace Supersonic
             }
             return position;
         }
-
     }
 }

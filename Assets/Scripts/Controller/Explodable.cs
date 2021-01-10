@@ -10,9 +10,9 @@ namespace Supersonic
         private AsteroidSettings settings;
 
 
-        public override void OnShot(Shot shot)
+        public override void WasShot(Shot shot)
         {
-            base.OnShot(shot);
+            base.WasShot(shot);
             Explode(shot);
         }
 
@@ -25,7 +25,7 @@ namespace Supersonic
                 var shootable = collidesWith[i].gameObject.GetComponent<Shootable>();
                 if (shootable != null)
                 {
-                    shootable.OnShot(shot);
+                    shootable.WasShot(shot);
                 }
             }
         }

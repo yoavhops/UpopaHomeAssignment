@@ -13,9 +13,8 @@ namespace Supersonic
         public AsteroidSettings Settings;
         [field: SerializeField]
         public List<Player> Players { get; private set; }
-        public MeshRenderer Playground;
+        public Playground Playground;
 
-        private Vector3 playgroundBox;
         [SerializeField]
         private Transform rewardParent;
         [SerializeField]
@@ -34,7 +33,6 @@ namespace Supersonic
 
             State = GameState.Run;
             timeUntilNextSpawn = Settings.AsteroidSpawnRate;
-            playgroundBox = Playground.bounds.size;
 
             foreach (var shootable in transform.GetComponentsInChildren<Shootable>())
             {
@@ -78,7 +76,7 @@ namespace Supersonic
             {
                 return;
             }
-            Vector3 position = new Vector3(Random.Range(0, playgroundBox.x), Random.Range(0, playgroundBox.y), Random.Range(0, 0));
+            Vector3 position = new Vector3(Random.Range(0, Playground.Size.x), Random.Range(0, Playground.Size.y), Random.Range(0, 0));
             SetupShootable(asteroidPrefab).transform.position = position;
         }
 

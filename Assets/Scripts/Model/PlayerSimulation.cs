@@ -38,7 +38,6 @@ namespace Supersonic
             {
                 torque -= time * rotationSpeed;
             }
-            //transform.LocalRotation = Quaternion.AngleAxis(rotationSpeed * time, direction) * transform.LocalRotation;
         }
 
         public void UpdateRotation(float time)
@@ -46,12 +45,12 @@ namespace Supersonic
             if (torque > 0)
             {
                 transform.LocalRotation = Quaternion.AngleAxis(rotationSpeed * time, Vector3.forward) * transform.LocalRotation;
-                torque = torque > time ? torque - time * rotationSpeed / torqueDrag : 0;
+                torque = torque > time * rotationSpeed / torqueDrag ? torque - time * rotationSpeed / torqueDrag : 0;
             }
             else if (torque < 0)
             {
                 transform.LocalRotation = Quaternion.AngleAxis(rotationSpeed * time, Vector3.back) * transform.LocalRotation;
-                torque = torque < -time ? torque + time * rotationSpeed / torqueDrag : 0;
+                torque = torque < -time * rotationSpeed / torqueDrag ? torque + time * rotationSpeed / torqueDrag : 0;
             }
         }
     }

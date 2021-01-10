@@ -30,7 +30,7 @@ namespace Tests
             Vector3 startPosition = player.transform.position, direction = new Vector3(1, 0, 0);
             float time = 0.5f;
 
-            player.Move(direction, time);
+            //player.Move(direction, time);
 
             Assert.AreEqual(player.transform.position, startPosition + direction * speed * time );
 
