@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Supersonic
 {
-    public class Player : MonoBehaviour, ILocalTransformAdapter
+    public class Player : MonoBehaviour, ILocalTransformAdapter, ICyclic<Player>
     {
         public Vector3 LocalPosition { get => transform.position; set => transform.position = value; }
         public Quaternion LocalRotation { get => transform.rotation; set => transform.rotation = value; }
@@ -18,9 +18,11 @@ namespace Supersonic
         public int Points { get => points; set { points = value; PointsChangedEvent(points); } }
         public float Health { get => health; set { health = value; HealthChangedEvent(health); } }
 
-        [SerializeField]
-        private Cyclical cyclical;
-        private bool isMirror;
+        public Player Mirror { get; set; }
+        public bool IsMirror { get; set; }
+        public bool IsOppositeShown { get; set; }
+
+        
         [SerializeField]
         private Shot shotGameObject;
         private float health = 1000;
@@ -32,12 +34,8 @@ namespace Supersonic
 
         void Start()
         {
-            isMirror = false;
-            cyclical = GetComponent<Cyclical>();
-            if (cyclical != null && cyclical.IsMirrorObject)
+            if (IsMirror)
             {
-                //enabled = false;
-                isMirror = true;
                 return;
             }
 
@@ -51,7 +49,7 @@ namespace Supersonic
 
         void Update()
         {
-            if (!isMirror)
+            if (!IsMirror)
             {
                 var deltaTime = Time.deltaTime;
                 if (Input.GetKey(KeyCode.W))
@@ -106,11 +104,10 @@ namespace Supersonic
             {
                 // Player Destroyed
                 gameObject.SetActive(false);
-                if (isMirror)
+                if (IsMirror)
                 {
-                    Player actual = cyclical.Mirror.GetComponent<Player>();
-                    actual.Health = 0;
-                    cyclical.Mirror.SetActive(false);
+                    Mirror.Health = 0;
+                    Mirror.gameObject.SetActive(false);
                 }
                 else
                 {
@@ -131,4 +128,6 @@ namespace Supersonic
             Health += reward.HealthAward;
         }
     }
+
+    
 }

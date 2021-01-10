@@ -5,13 +5,15 @@ using UnityEngine;
 
 namespace Supersonic
 {
-    public class Cyclical : MonoBehaviour
+    public class Cyclical<T> : MonoBehaviour where T : MonoBehaviour, ICyclic<T>
     {
-        public GameObject Mirror;
+        public T Mirror;
         public Playground Playground;
         public bool IsMirrorObject;
         [field: SerializeField]
         public bool Show { get; private set; }
+        [SerializeField]
+        private Vector3 offset;
         private Vector3 height, width, margin, middle;
         private HashSet<Boundary> boundariesInContact = new HashSet<Boundary>();
 
@@ -23,6 +25,9 @@ namespace Supersonic
             {
                 gameObject.name += "-Mirror";
             }
+            ICyclic<T> cyclic = GetComponent<ICyclic<T>>();
+            cyclic.IsMirror = IsMirrorObject;
+            cyclic.Mirror = Mirror;
         }
 
 
@@ -30,12 +35,12 @@ namespace Supersonic
         {
             if (!IsMirrorObject)
             {
-                Mirror.SetActive(Show);
+                Mirror.gameObject.SetActive(Show);
             }
             height = new Vector3(0, Playground.Size.y, 0);
             width = new Vector3(Playground.Size.x, 0, 0);
             margin = Playground.Margin;
-            middle = Playground.Middle;
+            middle = Playground.Middle + offset;
         }
 
 
@@ -57,13 +62,13 @@ namespace Supersonic
                         throw new ArgumentOutOfRangeException($"Illeal amount of boundaries to mirror over the cyclical range: {boundariesInContact.Count}");
                     }
                     Debug.Log($"{gameObject.name} {string.Join(" ", boundariesInContact)}");
-                    Mirror.SetActive(true);
+                    Mirror.gameObject.SetActive(true);
                     Mirror.transform.position = MirrorPosition();
                     Mirror.transform.rotation = transform.rotation;
                 }
                 else
                 {
-                    Mirror.SetActive(false);
+                    Mirror.gameObject.SetActive(false);
                 }
             }
         }

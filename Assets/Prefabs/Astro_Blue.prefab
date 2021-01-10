@@ -14,8 +14,8 @@ GameObject:
   - component: {fileID: 884250614220611346}
   - component: {fileID: 626514983}
   - component: {fileID: 626514981}
-  - component: {fileID: 626514982}
   - component: {fileID: -6441491783543729246}
+  - component: {fileID: -6478772349370492139}
   m_Layer: 0
   m_Name: Astro_Blue
   m_TagString: Untagged
@@ -128,22 +128,6 @@ MonoBehaviour:
   Direction: {x: 0, y: 0, z: 0}
   randomDirection: 1
   floatSpeed: 3
---- !u!114 &626514982
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8345035825226964509}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dd2fea0f06500464e837d783a13d53ab, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Mirror: {fileID: 0}
-  Playground: {fileID: 0}
-  IsMirrorObject: 0
-  <Show>k__BackingField: 0
 --- !u!114 &-6441491783543729246
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -156,5 +140,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d88d6bc197cd80d42b90d9cc5fe20a64, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Cyclical: {fileID: 0}
+  Cyclical: {fileID: -6478772349370492139}
+  RewardParent: {fileID: 0}
   loot: {fileID: 11400000, guid: c51122af20547d34595834403c283ed1, type: 2}
+--- !u!114 &-6478772349370492139
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8345035825226964509}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4310c7e662f26b64780651a208b337ef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Mirror: {fileID: 0}
+  Playground: {fileID: 0}
+  IsMirrorObject: 0
+  <Show>k__BackingField: 0

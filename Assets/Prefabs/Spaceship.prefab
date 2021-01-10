@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 3742556287735453986}
   - component: {fileID: 789594549}
   - component: {fileID: 789594547}
-  - component: {fileID: 789594548}
+  - component: {fileID: 3235924363436324185}
   m_Layer: 0
   m_Name: Spaceship
   m_TagString: Untagged
@@ -66,8 +66,7 @@ MonoBehaviour:
     type: 2}
   shotGameObject: {fileID: 5722849516639292363, guid: 7af5eb33fd65f439bada19737774a7dd,
     type: 3}
-  health: 1000
---- !u!114 &789594548
+--- !u!114 &3235924363436324185
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -76,7 +75,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 3742556287735453987}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dd2fea0f06500464e837d783a13d53ab, type: 3}
+  m_Script: {fileID: 11500000, guid: f8f3bf937052b8241b1e2d77dc5b2d48, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   Mirror: {fileID: 0}

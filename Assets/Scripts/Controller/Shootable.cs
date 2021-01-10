@@ -3,18 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 namespace Supersonic
 {
-    public class Shootable : MonoBehaviour
+    public class Shootable : MonoBehaviour, ICyclic<Shootable>
     {
         public delegate void ShootableShot(Shootable wasShot, Shot shot);
         public event ShootableShot OnShotEvent;
-        public Cyclical Cyclical;
-        protected bool IsMirror;
+        public Shootable Mirror { get; set; }
+        public bool IsMirror { get; set; }
+        public bool IsOppositeShown { get; set; }
 
-        void Start()
-        {
-            Cyclical = GetComponent<Cyclical>();
-            IsMirror = Cyclical != null && Cyclical.IsMirrorObject;
-        }
 
 
         virtual public void OnShot(Shot shot)
@@ -29,10 +25,10 @@ namespace Supersonic
         {
             gameObject.SetActive(false);
             OnShot(shot);
-            if (Cyclical != null && Cyclical.gameObject.activeSelf)
+            if (IsOppositeShown)
             {
-                Cyclical.Mirror.GetComponent<Shootable>().OnShot(shot);
-                Cyclical.Mirror.SetActive(false);
+                Mirror.OnShot(shot);
+                Mirror.gameObject.SetActive(false);
             }
             
         }
@@ -47,4 +43,6 @@ namespace Supersonic
             }
         }
     }
+
+  
 }

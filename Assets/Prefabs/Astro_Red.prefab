@@ -14,8 +14,8 @@ GameObject:
   - component: {fileID: 884250614220611346}
   - component: {fileID: 950589191}
   - component: {fileID: 950589189}
-  - component: {fileID: 950589190}
   - component: {fileID: 3995077522932942999}
+  - component: {fileID: -5109307798913712488}
   m_Layer: 0
   m_Name: Astro_Red
   m_TagString: Untagged
@@ -128,22 +128,6 @@ MonoBehaviour:
   Direction: {x: 0, y: 0, z: 0}
   randomDirection: 1
   floatSpeed: 3
---- !u!114 &950589190
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8345035825226964509}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dd2fea0f06500464e837d783a13d53ab, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Mirror: {fileID: 0}
-  Playground: {fileID: 0}
-  IsMirrorObject: 1
-  <Show>k__BackingField: 0
 --- !u!114 &3995077522932942999
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -156,5 +140,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 665e64e18481bd545ba758319d1a69f9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Cyclical: {fileID: 0}
+  Cyclical: {fileID: -5109307798913712488}
   settings: {fileID: 11400000, guid: f8f447d623215824aac7e5ebbfc90a41, type: 2}
+--- !u!114 &-5109307798913712488
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8345035825226964509}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4310c7e662f26b64780651a208b337ef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Mirror: {fileID: 0}
+  Playground: {fileID: 0}
+  IsMirrorObject: 0
+  <Show>k__BackingField: 0

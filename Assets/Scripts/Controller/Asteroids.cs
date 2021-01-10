@@ -89,15 +89,15 @@ namespace Supersonic
                     if (deploy)
                     {
                         lootable = lootables.Deploy();
-                        Cyclical cylic = lootable.GetComponent<Cyclical>();
+                        Cyclical<Shootable> cylic = lootable.GetComponent<Cyclical<Shootable>>();
                         if (cylic != null)
                         {
                             cylic.IsMirrorObject = false;
                             cylic.Playground = Playground;
                             Lootable mirror = lootables.Deploy();
-                            cylic.Mirror = mirror.gameObject;
-                            Cyclical mirrorCyclic = mirror.GetComponent<Cyclical>();
-                            mirrorCyclic.Mirror = lootable.gameObject;
+                            cylic.Mirror = mirror;
+                            Cyclical<Shootable> mirrorCyclic = mirror.GetComponent<Cyclical<Shootable>>();
+                            mirrorCyclic.Mirror = lootable;
                             mirrorCyclic.IsMirrorObject = true;
                             mirrorCyclic.Playground = Playground;
                             mirror.OnShotEvent += (wasShot, shot) =>
@@ -122,15 +122,15 @@ namespace Supersonic
                     if (deploy)
                     {
                         explodable = explodables.Deploy();
-                        Cyclical cylic = explodable.GetComponent<Cyclical>();
+                        Cyclical<Shootable> cylic = explodable.GetComponent<Cyclical<Shootable>>();
                         if (cylic != null)
                         {
                             cylic.Playground = Playground;
                             cylic.IsMirrorObject = false;
                             Explodable mirror = explodables.Deploy();
-                            cylic.Mirror = mirror.gameObject;
-                            Cyclical mirrorCyclic = mirror.GetComponent<Cyclical>();
-                            mirrorCyclic.Mirror = explodable.gameObject;
+                            cylic.Mirror = mirror;
+                            Cyclical<Shootable> mirrorCyclic = mirror.GetComponent<Cyclical<Shootable>>();
+                            mirrorCyclic.Mirror = explodable;
                             mirrorCyclic.IsMirrorObject = true;
                             mirrorCyclic.Playground = Playground;
                             mirror.OnShotEvent += (wasShot, shot) =>
