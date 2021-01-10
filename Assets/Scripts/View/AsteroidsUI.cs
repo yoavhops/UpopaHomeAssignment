@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Supersonic
 {
@@ -12,7 +13,9 @@ namespace Supersonic
         [SerializeField]
         private List<PlayerUI> playerUIs;
         private List<Player> players;
-        // Start is called before the first frame update
+        [SerializeField]
+        private Text gameOver;
+
         void Start()
         {
             players = asteroids.Players;
@@ -23,13 +26,14 @@ namespace Supersonic
             for (int i = 0; i < players.Count; i++)
             {
                 playerUIs[i].Setup(players[i]);
+                players[i].HealthChangedEvent += (health) => { if (health <= 0) GameOver(); };
             }
         }
 
-        // Update is called once per frame
-        void Update()
-        {
 
+        void GameOver()
+        {
+            gameOver.gameObject.SetActive(true);
         }
     }
 }

@@ -19,50 +19,69 @@ namespace Supersonic
         public float Health { get => health; set { health = value; HealthChangedEvent(health); } }
 
         [SerializeField]
-        private Shot shotGameObject;
+        private Cyclical cyclical;
+        private bool isMirror;
         [SerializeField]
+        private Shot shotGameObject;
         private float health = 1000;
         private int points = 0;
         private PlayerSimulation playerSimulation;
-        private Cyclical cyclical;
+        private float lifeLose;
+        private float timeUntilLifeLoseIncrease;
 
 
         void Start()
         {
+            isMirror = false;
             cyclical = GetComponent<Cyclical>();
             if (cyclical != null && cyclical.IsMirrorObject)
             {
-                enabled = false;
+                //enabled = false;
+                isMirror = true;
                 return;
             }
 
             playerSimulation = new PlayerSimulation(this, PlayerSettings);
             Health = PlayerSettings.StartingLife;
+            Points = 0;
+            lifeLose = PlayerSettings.LifeLosePerSecond;
+            timeUntilLifeLoseIncrease = PlayerSettings.LifeLoseIncreaseTime;
         }
 
 
         void Update()
         {
-            var deltaTime = Time.deltaTime;
-            if (Input.GetKey(KeyCode.W))
+            if (!isMirror)
             {
-                playerSimulation.MoveForward(deltaTime);
-            }
-            if (Input.GetKey(KeyCode.A))
-            {
-                playerSimulation.Rotate(Vector3.forward, deltaTime);
-            }
-            else if (Input.GetKey(KeyCode.D))
-            {
-                playerSimulation.Rotate(Vector3.back, deltaTime);
-            }
+                var deltaTime = Time.deltaTime;
+                if (Input.GetKey(KeyCode.W))
+                {
+                    playerSimulation.MoveForward(deltaTime);
+                }
+                if (Input.GetKey(KeyCode.A))
+                {
+                    playerSimulation.Rotate(Vector3.forward, deltaTime);
+                }
+                else if (Input.GetKey(KeyCode.D))
+                {
+                    playerSimulation.Rotate(Vector3.back, deltaTime);
+                }
 
-            if (Input.GetKeyDown(KeyCode.Space))
-            {
-                Shoot();
-            }
+                playerSimulation.UpdateRotation(deltaTime);
 
-            Health -= deltaTime * PlayerSettings.LifeLosePerSecond;
+                if (Input.GetKeyDown(KeyCode.Space))
+                {
+                    Shoot();
+                }
+
+                timeUntilLifeLoseIncrease -= deltaTime;
+                if (timeUntilLifeLoseIncrease < 0)
+                {
+                    lifeLose += PlayerSettings.LifeLoseIncreaseRate;
+                    timeUntilLifeLoseIncrease += PlayerSettings.LifeLoseIncreaseTime;
+                }
+                Health -= deltaTime * lifeLose;
+            }
         }
 
 
@@ -90,9 +109,16 @@ namespace Supersonic
             {
                 // Player Destroyed
                 gameObject.SetActive(false);
-                if (cyclical != null)
+                if (isMirror)
                 {
+                    Player actual = cyclical.Mirror.GetComponent<Player>();
+                    actual.Health = 0;
                     cyclical.Mirror.SetActive(false);
+                }
+                else
+                {
+                    Health = 0;
+
                 }
             }
         }

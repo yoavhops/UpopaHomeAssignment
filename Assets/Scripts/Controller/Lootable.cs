@@ -20,11 +20,9 @@ namespace Supersonic
 
         private void Loot(Shot shot)
         {
-            foreach (var rewardPrefab in loot.rewards)
-            {
-                Reward reward = Instantiate(rewardPrefab, Camera.main.WorldToScreenPoint(transform.position), Quaternion.identity, RewardParent);
-                reward.Cause = shot;
-            }
+            int index = Random.Range(0, loot.Rewards.Count);
+             Reward reward = Instantiate(loot.Rewards[index], Camera.main.WorldToScreenPoint(transform.position), Quaternion.identity, RewardParent);
+            reward.Cause = shot;
         }
     }
 }

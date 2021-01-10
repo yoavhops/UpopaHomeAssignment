@@ -14,7 +14,13 @@ namespace Supersonic
 
         protected virtual void Start()
         {
-            clickToReward.onClick.AddListener(() => Award());
+            clickToReward.onClick.AddListener(() =>
+            {
+                if (Cause.FiredBy.gameObject.activeInHierarchy)
+                {
+                    Award();
+                }
+            });
         }
         abstract public void Award();
     }

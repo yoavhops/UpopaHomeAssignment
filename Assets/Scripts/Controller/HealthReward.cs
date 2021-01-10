@@ -8,13 +8,13 @@ namespace Supersonic
     {
         [field: SerializeField]
         public float HealthAward { get; private set; }
-        [field: SerializeField]
-        public Player DroppedFor { get; set; }
+       
 
 
         public override void Award()
         {
-            DroppedFor.AwardHealth(this);
+            Cause.FiredBy.AwardHealth(this);
+            Destroy(gameObject);
         }
     }
 }

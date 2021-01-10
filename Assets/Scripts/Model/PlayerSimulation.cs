@@ -9,13 +9,15 @@ namespace Supersonic
         private ILocalTransformAdapter transform;
         private float movementSpeed;
         private float rotationSpeed;
-        private Vector3 torque;
-
+        [Range(-100f, 100f)]
+        private float torque;
+        private float torqueDrag;
 
         public PlayerSimulation(ILocalTransformAdapter transformAdapter, PlayerSettings settings)
         {
             movementSpeed = settings.MovementSpeed;
             rotationSpeed = settings.RotationSpeed;
+            torqueDrag = settings.TorqueDrag;
             transform = transformAdapter;
         }
 
@@ -28,8 +30,29 @@ namespace Supersonic
 
         public void Rotate(Vector3 direction, float time)
         {
-            torque += direction * time;
-            transform.LocalRotation = Quaternion.AngleAxis(rotationSpeed * time, direction) * transform.LocalRotation;
+            if (direction == Vector3.forward)
+            {
+                torque += time * rotationSpeed;
+            }
+            else if (direction == Vector3.back)
+            {
+                torque -= time * rotationSpeed;
+            }
+            //transform.LocalRotation = Quaternion.AngleAxis(rotationSpeed * time, direction) * transform.LocalRotation;
+        }
+
+        public void UpdateRotation(float time)
+        {
+            if (torque > 0)
+            {
+                transform.LocalRotation = Quaternion.AngleAxis(rotationSpeed * time, Vector3.forward) * transform.LocalRotation;
+                torque = torque > time ? torque - time * rotationSpeed / torqueDrag : 0;
+            }
+            else if (torque < 0)
+            {
+                transform.LocalRotation = Quaternion.AngleAxis(rotationSpeed * time, Vector3.back) * transform.LocalRotation;
+                torque = torque < -time ? torque + time * rotationSpeed / torqueDrag : 0;
+            }
         }
     }
 }

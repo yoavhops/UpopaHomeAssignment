@@ -6,7 +6,7 @@ using Random = UnityEngine.Random;
 
 namespace Supersonic
 {
-    public enum GameState { Start, Run, Pause }
+    public enum GameState { Start, Run, Pause, Over }
     public class Asteroids : MonoBehaviour
     {
         public GameState State { get; private set; }
@@ -14,6 +14,7 @@ namespace Supersonic
         [field: SerializeField]
         public List<Player> Players { get; private set; }
         public MeshRenderer Playground;
+
         private Vector3 playgroundBox;
         [SerializeField]
         private Transform rewardParent;
@@ -26,7 +27,7 @@ namespace Supersonic
 
         void Start()
         {
-            if (Settings.Assert(out string error))
+            if (!Settings.Assert(out string error))
             {
                 throw new ArgumentException($"Asteroid settings error: {error}.");
             }
@@ -38,6 +39,17 @@ namespace Supersonic
             foreach (var shootable in transform.GetComponentsInChildren<Shootable>())
             {
                 SetupShootable(shootable, false);
+            }
+
+            foreach (var player in Players)
+            {
+                player.HealthChangedEvent += (health) =>
+                {
+                    if (health <= 0)
+                    {
+                        GameOverForPlayer(player);
+                    }
+                };
             }
         }
 
@@ -107,6 +119,7 @@ namespace Supersonic
                         lootables.Undeploy(wasShot as Lootable);
                     };
                     return lootable;
+
                 case Explodable explodable:
                     if (deploy)
                     {
@@ -137,9 +150,15 @@ namespace Supersonic
                         explodables.Undeploy(wasShot as Explodable);
                     };
                     return explodable;
+
                 default:
                     throw new ArgumentException($"Unreconized type of Shootable.");
             }
+        }
+
+        private void GameOverForPlayer(Player lost)
+        {
+            State = GameState.Over;
         }
     }
     public class Explodables : Cache<Explodable> { }

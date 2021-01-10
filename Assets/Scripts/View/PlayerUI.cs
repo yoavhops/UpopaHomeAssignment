@@ -27,6 +27,10 @@ namespace Supersonic
 
         private void OnHealthChanged(float amount)
         {
+            if (amount < 0)
+            {
+
+            }
             health.BarValue = amount * 100 / playerStartingHealth ;
         }
 
