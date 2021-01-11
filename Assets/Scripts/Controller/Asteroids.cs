@@ -16,12 +16,18 @@ namespace Supersonic
         public Playground Playground;
 
         [SerializeField]
+        private Storage storage;
+        private IStorageStrategy disk;
+        [SerializeField]
         private Transform rewardParent;
+        [SerializeField]
+        private ShotPool shots;
         [SerializeField]
         private LootablePool lootables;
         [SerializeField]
         private ExplodablePool explodables;
         private float timeUntilNextSpawn;
+        
 
 
         void Start()
@@ -41,6 +47,7 @@ namespace Supersonic
 
             foreach (var player in Players)
             {
+                player.ShotsPool = shots;
                 player.HealthChangedEvent += (health) =>
                 {
                     if (health <= 0)
@@ -49,6 +56,8 @@ namespace Supersonic
                     }
                 };
             }
+
+            disk = storage.SelectedStorage;
         }
 
 
@@ -154,10 +163,117 @@ namespace Supersonic
             }
         }
 
+
         private void GameOverForPlayer(Player lost)
         {
             State = GameState.Over;
         }
+
+
+        public void SaveGame()
+        {
+            disk.SetBool("saved", true);
+            disk.SetInt("players", Players.Count);
+            for (int i = 0; i < Players.Count; i++)
+            {
+                Player player = Players[i];
+                disk.SetFloat($"player{i}-health", player.Health);
+                disk.SetFloat($"player{i}-points", player.Points);
+                // position
+                disk.SetFloat($"player{i}-positionX", player.transform.position.x);
+                disk.SetFloat($"player{i}-positionY", player.transform.position.y);
+                // rotation
+                disk.SetFloat($"player{i}-rotationX", player.transform.rotation.x);
+                disk.SetFloat($"player{i}-rotationY", player.transform.rotation.y);
+                disk.SetFloat($"player{i}-rotationZ", player.transform.rotation.z);
+                disk.SetFloat($"player{i}-rotationW", player.transform.rotation.w);
+            }
+
+            SavePool(lootables, "lootable");
+            SavePool(explodables, "explodable");
+            SavePool(shots, "shot");
+        }
+
+
+
+
+       
+
+
+
+
+        public void LoadGame()
+        {
+            if (!IsGameSaved())
+            {
+                return;
+            }
+            
+            int players = disk.GetInt("players");
+            for (int i = 0; i < players; i++)
+            {
+                if (Players.Count <= i)
+                {
+                    Players.Add(Instantiate(Players[0]));//TODO: need to add mirror handling
+                }
+                Player player = Players[i];
+                player.Health = disk.GetFloat($"player{i}-health");
+                player.Points = disk.GetInt($"player{i}-points");
+                // position
+                Vector3 position = Vector3.zero;
+                position.x = disk.GetFloat($"player{i}-positionX");
+                position.y = disk.GetFloat($"player{i}-positionY");
+                player.transform.position = position;
+                // rotation
+                Quaternion rotation = Quaternion.identity;
+                rotation.x = disk.GetFloat($"player{i}-rotationX");
+                rotation.y = disk.GetFloat($"player{i}-rotationY");
+                rotation.z = disk.GetFloat($"player{i}-rotationZ");
+                rotation.w = disk.GetFloat($"player{i}-rotationW");
+                player.transform.rotation = rotation;
+            }
+
+            LoadPool(lootables, "lootable");
+            LoadPool(lootables, "explodable");
+            LoadPool(lootables, "shot");
+        }
+
+
+        public bool IsGameSaved()
+        {
+            return disk.DoesKeyExist("saved") && disk.GetBool("saved");
+        }
+
+
+        private void SavePool<T>(ICache<T> pool, string name) where T : MonoBehaviour
+        {
+            var deployed = new List<T>(pool.Deployed);
+            disk.SetInt($"{name}s", deployed.Count);
+            for (int i = 0; i < deployed.Count; i++)
+            {
+                disk.SetFloat($"{name}{i}-positionX", deployed[i].transform.position.x);
+                disk.SetFloat($"{name}{i}-positionY", deployed[i].transform.position.y);
+            }
+        }
+
+
+        private void LoadPool<T>(ICache<T> cache, string name) where T : MonoBehaviour
+        {
+            int count = disk.GetInt($"{name}s");
+            var deploy = new List<T>(cache.Deploy(count));
+            for (int i = 0; i < count; i++)
+            {
+                T deployItem = deploy[i];
+                Vector3 position = Vector3.zero;
+                position.x = disk.GetFloat($"{name}{i}-positionX");
+                position.y = disk.GetFloat($"{name}{i}-positionY");
+            }
+        }
     }
-    public class Explodables : Cache<Explodable> { }
 }
+
+
+
+
+
+   

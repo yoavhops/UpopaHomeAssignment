@@ -21,6 +21,7 @@ namespace Supersonic
         public Player Mirror { get; set; }
         public bool IsMirror { get; set; }
         public bool IsOppositeShown { get; set; }
+        public ShotPool ShotsPool;
 
         
         [SerializeField]
@@ -31,6 +32,7 @@ namespace Supersonic
         private float lifeLose;
         private float timeUntilLifeLoseIncrease;
 
+        int shotsCount = 0;
 
         void Start()
         {
@@ -83,17 +85,26 @@ namespace Supersonic
         }
 
 
-        
+
 
 
         public void Shoot()
         {
+            if (!IsMirror)
+            {
+                Shot shot = ShotsPool.Deploy();
+                shot.transform.position = transform.position;
+                shot.transform.rotation = transform.rotation;
+                shot.FiredBy = this;
+                shot.ShotHitEvent += (shotHit, obj) => ShotsPool.Undeploy(shotHit);
+                shot.StartTimeAlive();
 
-            Shot shot = Instantiate(shotGameObject, transform.position, transform.rotation);
-            Floatable floatingShot = shot.GetComponent<Floatable>();
-            floatingShot.Direction = transform.up;
-            shot.FiredBy = this;
+                Floatable floatingShot = shot.GetComponent<Floatable>();
+                floatingShot.Direction = transform.up;
 
+                shotsCount++;
+                shot.name = $"Shot {shotsCount}";
+            }
         }
 
 
@@ -129,5 +140,5 @@ namespace Supersonic
         }
     }
 
-    
+
 }

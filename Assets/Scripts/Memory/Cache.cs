@@ -9,6 +9,7 @@ namespace Supersonic
 {
     public class Cache<T> : MonoBehaviour, ICache<T> where T : MonoBehaviour
     {
+        public HashSet<T> Deployed => new HashSet<T>(deployed);
         [SerializeField] private int MaxSize;
         [SerializeField] private GameObject Instance;
         [SerializeField] private Transform DeployedParent;

@@ -61,7 +61,6 @@ namespace Supersonic
                     {
                         throw new ArgumentOutOfRangeException($"Illeal amount of boundaries to mirror over the cyclical range: {boundariesInContact.Count}");
                     }
-                    Debug.Log($"{gameObject.name} {string.Join(" ", boundariesInContact)}");
                     Mirror.gameObject.SetActive(true);
                     Mirror.transform.position = MirrorPosition();
                     Mirror.transform.rotation = transform.rotation;

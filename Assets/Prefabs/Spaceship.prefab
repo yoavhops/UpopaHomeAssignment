@@ -64,6 +64,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <PlayerSettings>k__BackingField: {fileID: 11400000, guid: c47669019b4ac5a43be883292247082b,
     type: 2}
+  ShotsPool: {fileID: 0}
   shotGameObject: {fileID: 5722849516639292363, guid: 7af5eb33fd65f439bada19737774a7dd,
     type: 3}
 --- !u!114 &3235924363436324185
@@ -82,6 +83,7 @@ MonoBehaviour:
   Playground: {fileID: 0}
   IsMirrorObject: 0
   <Show>k__BackingField: 0
+  offset: {x: 0, y: 0, z: 0}
 --- !u!64 &3482977780642593067
 MeshCollider:
   m_ObjectHideFlags: 0

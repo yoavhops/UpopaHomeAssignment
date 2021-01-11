@@ -24,6 +24,7 @@ namespace Supersonic
         void Undeploy(T instance);
 
         void AddDeployed(T gameObject);
+        HashSet<T> Deployed { get; }
 
     }
 }
