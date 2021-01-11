@@ -40,6 +40,7 @@ namespace Supersonic
                     gameOver.gameObject.SetActive(true);
                     break;
                 case GameState.Run:
+                    playerUIs.ForEach(playerUI => playerUI.ResetHealth());
                     gameOver.gameObject.SetActive(false);
                     break;
 

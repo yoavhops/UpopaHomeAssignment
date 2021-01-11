@@ -39,7 +39,8 @@ namespace Supersonic
                 throw new ArgumentException($"Asteroid settings error: {error}.");
             }
 
-            State = GameState.Run;
+            ChangeState(GameState.Run);
+            
             timeUntilNextSpawn = Settings.AsteroidSpawnRate;
 
             foreach (var shootable in transform.GetComponentsInChildren<Shootable>())
@@ -168,7 +169,7 @@ namespace Supersonic
 
         private void GameOverForPlayer(Player lost)
         {
-            State = GameState.Over;
+            ChangeState(GameState.Over);
         }
 
         public void ChangeState(GameState state)
@@ -176,7 +177,7 @@ namespace Supersonic
             switch(state)
             {
                 case GameState.Over:
-                    ResetGame();
+                    //ResetGame();
                     break;
                     
             }
@@ -222,8 +223,8 @@ namespace Supersonic
                 disk.SetFloat($"player{i}-rotationW", player.transform.rotation.w);
             }
 
-            SavePool(lootables, "lootable");
-            SavePool(explodables, "explodable");
+            SaveCyclicPool<Lootable,Shootable>(lootables, "lootable");
+            SaveCyclicPool<Explodable, Shootable>(explodables, "explodable");
             SavePool(shots, "shot");
         }
 
@@ -243,7 +244,7 @@ namespace Supersonic
             }
 
             ResetGame();
-            State = GameState.Run;
+            ChangeState(GameState.Run);
 
             int players = disk.GetInt("players");
             for (int i = 0; i < players; i++)
@@ -304,6 +305,26 @@ namespace Supersonic
             }
         }
 
+        private void SaveCyclicPool<T,K>(ICache<T> pool, string name) where T : K, ICyclic<K> where K : MonoBehaviour
+        {
+            var poolDeployed = pool.Deployed;
+            poolDeployed.RemoveWhere(cyclic => cyclic.IsMirror);
+            var deployed = new List<T>(poolDeployed);
+            Debug.Log($"saving {deployed.Count}");
+            disk.SetInt($"{name}s", deployed.Count);
+            for (int i = 0; i < deployed.Count; i++)
+            {
+                disk.SetFloat($"{name}{i}-positionX", deployed[i].transform.position.x);
+                disk.SetFloat($"{name}{i}-positionY", deployed[i].transform.position.y);
+                Floatable floatable = deployed[i].GetComponent<Floatable>();
+                if (floatable != null)
+                {
+                    disk.SetFloat($"{name}{i}-floatX", floatable.Direction.x);
+                    disk.SetFloat($"{name}{i}-floatY", floatable.Direction.y);
+                }
+            }
+        }
+
 
         private void LoadPool<T>(ICache<T> cache, string name) where T : MonoBehaviour
         {
@@ -334,7 +355,7 @@ namespace Supersonic
 
             int count = disk.GetInt($"{name}s");
             List<T> deploy = new List<T>(cache.Deployed), mirrors = new List<T>(cache.Deploy(count));
-            
+            Debug.Log($"loading {deploy.Count}");
             for (int i = 0; i < count; i++)
             {
                 T deployItem = deploy[i];
