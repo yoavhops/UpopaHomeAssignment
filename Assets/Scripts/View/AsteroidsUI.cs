@@ -26,14 +26,24 @@ namespace Supersonic
             for (int i = 0; i < players.Count; i++)
             {
                 playerUIs[i].Setup(players[i]);
-                players[i].HealthChangedEvent += (health) => { if (health <= 0) GameOver(); };
+                
             }
+            asteroids.StateChangedEvent += GameStateChanged;
         }
 
 
-        void GameOver()
+        void GameStateChanged(GameState state)
         {
-            gameOver.gameObject.SetActive(true);
+            switch (state)
+            {
+                case GameState.Over:
+                    gameOver.gameObject.SetActive(true);
+                    break;
+                case GameState.Run:
+                    gameOver.gameObject.SetActive(false);
+                    break;
+
+            }
         }
     }
 }

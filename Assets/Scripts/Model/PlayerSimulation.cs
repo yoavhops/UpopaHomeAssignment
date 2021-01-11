@@ -9,15 +9,16 @@ namespace Supersonic
         private ILocalTransformAdapter transform;
         private float movementSpeed;
         private float rotationSpeed;
-        [Range(-100f, 100f)]
         private float torque;
         private float torqueDrag;
+        private float torqueClamp;
 
         public PlayerSimulation(ILocalTransformAdapter transformAdapter, PlayerSettings settings)
         {
             movementSpeed = settings.MovementSpeed;
             rotationSpeed = settings.RotationSpeed;
             torqueDrag = settings.TorqueDrag;
+            torqueClamp = settings.TorqueClamp;
             transform = transformAdapter;
         }
 
@@ -38,6 +39,7 @@ namespace Supersonic
             {
                 torque -= time * rotationSpeed;
             }
+            torque = Mathf.Clamp(torque, -torqueClamp, torqueClamp);
         }
 
         public void UpdateRotation(float time)

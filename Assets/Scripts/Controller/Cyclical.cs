@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Supersonic
 {
-    public class Cyclical<T> : MonoBehaviour where T : MonoBehaviour, ICyclic<T>
+    public class Cyclical<T> : MonoBehaviour where T : MonoBehaviour
     {
         public T Mirror;
         public Playground Playground;

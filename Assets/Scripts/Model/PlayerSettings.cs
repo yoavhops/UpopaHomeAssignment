@@ -13,6 +13,8 @@ public class PlayerSettings : ScriptableObject
     [field: SerializeField]
     public float TorqueDrag { get; private set; }
     [field: SerializeField]
+    public float TorqueClamp { get; private set; }
+    [field: SerializeField]
     public float LifeLosePerSecond { get; private set; }
     [field: SerializeField]
     public float StartingLife { get; private set; }

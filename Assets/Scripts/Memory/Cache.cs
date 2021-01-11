@@ -180,6 +180,20 @@ namespace Supersonic
             undeployed.Add(item);
         }
 
+
+        /// <summary>
+        /// Puts cached objects back in the cach to be redeployed
+        /// </summary>
+        /// <param name="item">The game object instance to be made inactive and put back in the cache</param>
+        public virtual void Undeploy(HashSet<T> items)
+        {
+            foreach (var item in items)
+            {
+                Undeploy(item);
+            }
+        }
+
+
         /// <summary>
         /// Adds an already deployed item
         /// </summary>

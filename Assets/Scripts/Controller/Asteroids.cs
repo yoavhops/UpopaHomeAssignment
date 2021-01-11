@@ -9,6 +9,8 @@ namespace Supersonic
     public enum GameState { Start, Run, Pause, Over }
     public class Asteroids : MonoBehaviour
     {
+        public delegate void StateChanged(GameState state);
+        public event StateChanged StateChangedEvent;
         public GameState State { get; private set; }
         public AsteroidSettings Settings;
         [field: SerializeField]
@@ -169,16 +171,47 @@ namespace Supersonic
             State = GameState.Over;
         }
 
+        public void ChangeState(GameState state)
+        {
+            switch(state)
+            {
+                case GameState.Over:
+                    ResetGame();
+                    break;
+                    
+            }
+            State = state;
+            
+            StateChangedEvent?.Invoke(state);
+        }
+
+        private void ResetGame()
+        {
+            lootables.Undeploy(lootables.Deployed);
+            explodables.Undeploy(explodables.Deployed);
+            shots.Undeploy(shots.Deployed);
+            var rewards = rewardParent.GetComponentsInChildren<Reward>();
+            foreach (var reward in rewards)
+            {
+                Destroy(reward.gameObject);
+            }
+        }
+
 
         public void SaveGame()
         {
+            if (State != GameState.Run)
+            {
+                return;
+            }
+
             disk.SetBool("saved", true);
             disk.SetInt("players", Players.Count);
             for (int i = 0; i < Players.Count; i++)
             {
                 Player player = Players[i];
                 disk.SetFloat($"player{i}-health", player.Health);
-                disk.SetFloat($"player{i}-points", player.Points);
+                disk.SetInt($"player{i}-points", player.Points);
                 // position
                 disk.SetFloat($"player{i}-positionX", player.transform.position.x);
                 disk.SetFloat($"player{i}-positionY", player.transform.position.y);
@@ -208,7 +241,10 @@ namespace Supersonic
             {
                 return;
             }
-            
+
+            ResetGame();
+            State = GameState.Run;
+
             int players = disk.GetInt("players");
             for (int i = 0; i < players; i++)
             {
@@ -217,6 +253,7 @@ namespace Supersonic
                     Players.Add(Instantiate(Players[0]));//TODO: need to add mirror handling
                 }
                 Player player = Players[i];
+                player.gameObject.SetActive(true);
                 player.Health = disk.GetFloat($"player{i}-health");
                 player.Points = disk.GetInt($"player{i}-points");
                 // position
@@ -233,9 +270,14 @@ namespace Supersonic
                 player.transform.rotation = rotation;
             }
 
-            LoadPool(lootables, "lootable");
-            LoadPool(lootables, "explodable");
-            LoadPool(lootables, "shot");
+            LoadCyclicPool<Lootable, CyclicalShootable, Shootable>(lootables, "lootable");
+            LoadCyclicPool<Explodable, CyclicalShootable, Shootable>(explodables, "explodable");
+            LoadPool(shots, "shot");
+
+            foreach (var lootable in lootables.Deployed)
+            {
+                lootable.RewardParent = rewardParent;
+            }
         }
 
 
@@ -253,6 +295,12 @@ namespace Supersonic
             {
                 disk.SetFloat($"{name}{i}-positionX", deployed[i].transform.position.x);
                 disk.SetFloat($"{name}{i}-positionY", deployed[i].transform.position.y);
+                Floatable floatable = deployed[i].GetComponent<Floatable>();
+                if (floatable != null)
+                {
+                    disk.SetFloat($"{name}{i}-floatX", floatable.Direction.x);
+                    disk.SetFloat($"{name}{i}-floatY", floatable.Direction.y);
+                }
             }
         }
 
@@ -267,6 +315,38 @@ namespace Supersonic
                 Vector3 position = Vector3.zero;
                 position.x = disk.GetFloat($"{name}{i}-positionX");
                 position.y = disk.GetFloat($"{name}{i}-positionY");
+                deployItem.transform.position = position;
+
+                Floatable floatable = deployItem.GetComponent<Floatable>();
+                if (floatable != null)
+                {
+                    Vector3 direction = Vector3.zero;
+                    direction.x = disk.GetFloat($"{name}{i}-floatX");
+                    direction.y = disk.GetFloat($"{name}{i}-floatY");
+                    floatable.Direction = direction;
+                }
+            }
+        }
+
+        private void LoadCyclicPool<T,K,U>(ICache<T> cache, string name) where T : U, ICyclic<U> where K : Cyclical<U> where U : MonoBehaviour
+        {
+            LoadPool(cache, name);
+
+            int count = disk.GetInt($"{name}s");
+            List<T> deploy = new List<T>(cache.Deployed), mirrors = new List<T>(cache.Deploy(count));
+            
+            for (int i = 0; i < count; i++)
+            {
+                T deployItem = deploy[i];
+                K cyclical = deployItem.GetComponent<K>();
+                cyclical.Mirror = mirrors[i];
+                cyclical.IsMirrorObject = false;
+                cyclical.Playground = Playground;
+
+                K mirror = mirrors[i].GetComponent<K>();
+                mirror.Mirror = deployItem;
+                mirror.IsMirrorObject = true;
+                mirror.Playground = Playground;
             }
         }
     }

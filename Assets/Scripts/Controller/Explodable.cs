@@ -4,11 +4,12 @@ using UnityEngine;
 
 namespace Supersonic
 {
-    public class Explodable : Shootable
+    public class Explodable : Shootable, ICyclic<Shootable>
     {
+
         [SerializeField]
         private AsteroidSettings settings;
-
+        
 
         public override void WasShot(Shot shot)
         {

@@ -3,5 +3,5 @@ using System.Collections.Generic;
 using UnityEngine;
 namespace Supersonic
 {
-    public class LootablePool : Cache<Lootable> { }
+    public class LootablePool : Cache<Lootable>, ICache<Lootable> { }
 }

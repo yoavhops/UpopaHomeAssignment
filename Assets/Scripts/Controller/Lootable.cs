@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Supersonic
 {
-    public class Lootable : Shootable
+    public class Lootable : Shootable, ICyclic<Shootable>
     {
         public Transform RewardParent;
         [SerializeField]
