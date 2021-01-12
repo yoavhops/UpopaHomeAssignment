@@ -20,7 +20,7 @@ namespace Supersonic
         private Text gameOver;
 
 
-        void Start()
+        void Awake()
         {
             players = asteroids.Players;
             if (players.Count != playerUIs.Count)
@@ -30,7 +30,6 @@ namespace Supersonic
             for (int i = 0; i < players.Count; i++)
             {
                 playerUIs[i].Setup(players[i]);
-                
             }
             asteroids.StateChangedEvent += GameStateChanged;
         }

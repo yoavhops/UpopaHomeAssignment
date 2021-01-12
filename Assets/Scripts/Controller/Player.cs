@@ -15,7 +15,7 @@ namespace Supersonic
         public delegate void HealthChanged(float health);
         public event PointsChanged PointsChangedEvent;
         public event HealthChanged HealthChangedEvent;
-        public int Points { get => points; set { points = value; PointsChangedEvent(points); } }
+        public int Points { get => points; set { points = value; PointsChangedEvent?.Invoke(points); } }
         public float Health { get => health; set { health = value; HealthChangedEvent(health); } }
         public Player Mirror { get; set; }
         public bool IsMirror { get; set; }

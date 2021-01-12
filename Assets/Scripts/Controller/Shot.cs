@@ -19,7 +19,6 @@ namespace Supersonic
 
         private void Awake()
         {
-            Debug.Log($"{name} starts time alive");
             StartTimeAlive();
         }
 

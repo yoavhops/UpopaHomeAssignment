@@ -36,7 +36,7 @@ namespace Supersonic
         [SerializeField]
         private ExplodablePool explodables;
         private float timeUntilNextSpawn;
-        
+
 
         void Start()
         {
@@ -46,7 +46,7 @@ namespace Supersonic
             }
 
             ChangeState(GameState.Run);
-            
+
             timeUntilNextSpawn = Settings.AsteroidSpawnRate;
 
             foreach (var shootable in transform.GetComponentsInChildren<Shootable>())
@@ -83,6 +83,12 @@ namespace Supersonic
                         timeUntilNextSpawn += Settings.AsteroidSpawnRate;
                     }
                 }
+            }
+
+
+            if (Input.GetKeyDown(KeyCode.Escape))
+            {
+                Application.Quit();
             }
         }
 
@@ -188,19 +194,19 @@ namespace Supersonic
 
         public void ChangeState(GameState state)
         {
-            switch(state)
+            switch (state)
             {
                 case GameState.Over:
                     break;
-                    
+
             }
             State = state;
-            
+
             StateChangedEvent?.Invoke(state);
         }
 
 
-        private void ResetGame()
+        private void UndeployGame()
         {
             lootables.Undeploy(lootables.Deployed);
             explodables.Undeploy(explodables.Deployed);
@@ -210,6 +216,25 @@ namespace Supersonic
             {
                 Destroy(reward.gameObject);
             }
+        }
+
+
+        public void ResetGame()
+        {
+            UndeployGame();
+
+            for (int i = 0; i < 10; i++)
+            {
+                Spawn();
+            }
+
+            ChangeState(GameState.Run);
+            Players.ForEach(p =>
+            {
+                p.gameObject.SetActive(true);
+                p.Health = p.PlayerSettings.StartingLife;
+                p.Points = 0;
+            });
         }
 
 
@@ -238,7 +263,7 @@ namespace Supersonic
                 disk.SetFloat($"player{i}-rotationW", player.transform.rotation.w);
             }
 
-            SaveCyclicPool<Lootable,Shootable>(lootables, "lootable");
+            SaveCyclicPool<Lootable, Shootable>(lootables, "lootable");
             SaveCyclicPool<Explodable, Shootable>(explodables, "explodable");
             SavePool(shots, "shot");
         }
@@ -246,7 +271,7 @@ namespace Supersonic
 
 
 
-       
+
 
 
 
@@ -258,7 +283,7 @@ namespace Supersonic
                 return;
             }
 
-            ResetGame();
+            UndeployGame();
             ChangeState(GameState.Run);
 
             int players = disk.GetInt("players");
@@ -322,7 +347,7 @@ namespace Supersonic
         }
 
 
-        private void SaveCyclicPool<T,K>(ICache<T> pool, string name) where T : K, ICyclic<K> where K : MonoBehaviour
+        private void SaveCyclicPool<T, K>(ICache<T> pool, string name) where T : K, ICyclic<K> where K : MonoBehaviour
         {
             var poolDeployed = pool.Deployed;
             poolDeployed.RemoveWhere(cyclic => cyclic.IsMirror);
@@ -369,7 +394,7 @@ namespace Supersonic
         }
 
 
-        private void LoadCyclicPool<T,K,U>(ICache<T> cache, string name) where T : U, ICyclic<U> where K : Cyclical<U> where U : MonoBehaviour, ICyclic<U>
+        private void LoadCyclicPool<T, K, U>(ICache<T> cache, string name) where T : U, ICyclic<U> where K : Cyclical<U> where U : MonoBehaviour, ICyclic<U>
         {
             LoadPool(cache, name);
 
@@ -397,4 +422,4 @@ namespace Supersonic
 
 
 
-   
+

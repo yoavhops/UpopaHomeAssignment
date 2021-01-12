@@ -8,10 +8,11 @@ namespace Supersonic
     {
         [SerializeField]
         private Text points;
-
         [SerializeField]
         private HealthBar health;
         private float playerStartingHealth;
+
+
         public void Setup(Player player)
         {
             player.PointsChangedEvent += OnPointsChanged;
@@ -20,20 +21,22 @@ namespace Supersonic
 
         }
 
+
         private void OnPointsChanged(int amount)
         {
             points.text = $"Score\n{amount}";
         }
+
 
         private void OnHealthChanged(float amount)
         {
             health.BarValue = amount * 100 / playerStartingHealth ;
         }
 
+
         public void ResetHealth()
         {
             health.enabled = true;
         }
-
     }
 }

@@ -413,7 +413,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 261845502, guid: 9ad370ea8e4e4fc4fa9c6a4359c8dbc2, type: 3}
       propertyPath: DefaultStorageStrategy
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 137864587232889258, guid: 9ad370ea8e4e4fc4fa9c6a4359c8dbc2,
         type: 3}
@@ -699,6 +699,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 678394832785084655, guid: 59b4033443d96bf4386f46469c2f84e4,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 73
+      objectReference: {fileID: 0}
     - target: {fileID: 1399652293208380033, guid: 59b4033443d96bf4386f46469c2f84e4,
         type: 3}
       propertyPath: asteroids
@@ -853,6 +858,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_AnchoredPosition.x
       value: 73
+      objectReference: {fileID: 0}
+    - target: {fileID: 5099515791648598520, guid: 59b4033443d96bf4386f46469c2f84e4,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 261845501}
+    - target: {fileID: 5099515791648598520, guid: 59b4033443d96bf4386f46469c2f84e4,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: ResetGame
       objectReference: {fileID: 0}
     - target: {fileID: 5620309245362151735, guid: 59b4033443d96bf4386f46469c2f84e4,
         type: 3}
