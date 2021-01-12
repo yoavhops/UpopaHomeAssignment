@@ -7,6 +7,7 @@ namespace Supersonic
     public class Lootable : Shootable, ICyclic<Shootable>
     {
         public Transform RewardParent;
+
         [SerializeField]
         private Loot loot;
 

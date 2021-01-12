@@ -26,7 +26,4 @@ namespace Tests
             Assert.LessOrEqual(player.Health, 0, $"Player {player.name} isn't dead");
         }
     }
-
-
-
 }

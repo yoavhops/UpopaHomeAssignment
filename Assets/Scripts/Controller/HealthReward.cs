@@ -8,7 +8,6 @@ namespace Supersonic
     {
         [field: SerializeField]
         public float HealthAward { get; private set; }
-       
 
 
         public override void Award()

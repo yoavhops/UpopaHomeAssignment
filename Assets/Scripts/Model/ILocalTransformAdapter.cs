@@ -4,6 +4,9 @@ using UnityEngine;
 
 namespace Supersonic
 {
+    /// <summary>
+    /// Decoupler for MonoBehaviours to pure C# classes.
+    /// </summary>
     public interface ILocalTransformAdapter
     {
         Vector3 LocalPosition { get; set; }

@@ -13,6 +13,7 @@ namespace Supersonic
         private float torqueDrag;
         private float torqueClamp;
 
+
         public PlayerSimulation(ILocalTransformAdapter transformAdapter, PlayerSettings settings)
         {
             movementSpeed = settings.MovementSpeed;
@@ -41,6 +42,7 @@ namespace Supersonic
             }
             torque = Mathf.Clamp(torque, -torqueClamp, torqueClamp);
         }
+
 
         public void UpdateRotation(float time)
         {

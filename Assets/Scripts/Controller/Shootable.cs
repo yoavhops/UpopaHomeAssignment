@@ -3,6 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 namespace Supersonic
 {
+    /// <summary>
+    /// Base class to add to anything that might be shot.
+    /// Provides basic event methods which can be easily overriden.
+    /// </summary>
     public class Shootable : MonoBehaviour, ICyclic<Shootable>
     {
         public delegate void ShootableShot(Shootable wasShot, Shot shot);
@@ -12,13 +16,11 @@ namespace Supersonic
         public bool IsOppositeShown { get; set; }
 
 
-
         virtual public void OnShot(Shot shot)
         {
             OnShotEvent?.Invoke(this, shot);
             return;
         }
-
 
 
         virtual public void WasShot(Shot shot)
@@ -43,6 +45,4 @@ namespace Supersonic
             }
         }
     }
-
-  
 }

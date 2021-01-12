@@ -5,9 +5,14 @@ using UnityEngine.UI;
 
 namespace Supersonic
 {
+    /// <summary>
+    /// Abstract base class for rewards.
+    /// Award is the main method for overriding by derived classes.
+    /// </summary>
     public abstract class Reward : MonoBehaviour
     {
         public Shot Cause;
+
         [SerializeField]
         private Button clickToReward;
 
@@ -22,6 +27,8 @@ namespace Supersonic
                 }
             });
         }
+
+
         abstract public void Award();
     }
 }

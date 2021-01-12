@@ -4,6 +4,7 @@ using UnityEngine;
 
 namespace Supersonic
 {
+    //To be able to add as component
     public class CyclicalShootable : Cyclical<Shootable>
     {
 

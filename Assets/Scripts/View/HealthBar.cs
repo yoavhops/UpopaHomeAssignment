@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+// Solely created for changing appearance of text
 public class HealthBar : ProgressBar
 {
     protected override void UpdateValue(float val)

@@ -17,7 +17,6 @@ namespace Supersonic
         public event HealthChanged HealthChangedEvent;
         public int Points { get => points; set { points = value; PointsChangedEvent(points); } }
         public float Health { get => health; set { health = value; HealthChangedEvent(health); } }
-
         public Player Mirror { get; set; }
         public bool IsMirror { get; set; }
         public bool IsOppositeShown { get; set; }
@@ -31,8 +30,8 @@ namespace Supersonic
         private PlayerSimulation playerSimulation;
         private float lifeLose;
         private float timeUntilLifeLoseIncrease;
+        private int shotsCount = 0;
 
-        int shotsCount = 0;
 
         void Start()
         {
@@ -83,9 +82,6 @@ namespace Supersonic
                 Health -= deltaTime * lifeLose;
             }
         }
-
-
-
 
 
         public void Shoot()
@@ -139,6 +135,4 @@ namespace Supersonic
             Health += reward.HealthAward;
         }
     }
-
-
 }

@@ -5,13 +5,21 @@ using UnityEngine;
 
 namespace Supersonic
 {
-    public class Cyclical<T> : MonoBehaviour where T : MonoBehaviour
+    /// <summary>
+    /// Generic component which adds cyclical behaviour to objects that
+    /// allows circumnaviating a referenced Playground object.
+    /// Using a Mirror field, the Cyclical component will make sure to update whichever
+    /// component T stands for and update it's Mirror field as well as it's own.
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    public class Cyclical<T> : MonoBehaviour where T : MonoBehaviour, ICyclic<T>
     {
         public T Mirror;
         public Playground Playground;
         public bool IsMirrorObject;
         [field: SerializeField]
         public bool Show { get; private set; }
+
         [SerializeField]
         private Vector3 offset;
         private Vector3 height, width, margin, middle;

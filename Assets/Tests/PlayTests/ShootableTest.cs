@@ -53,7 +53,4 @@ namespace Tests
             Assert.Zero(explodables.FindAll(e => e.gameObject.activeInHierarchy).Count, "Not all asteroids were destroyed.");
         }
     }
-
-
-
 }

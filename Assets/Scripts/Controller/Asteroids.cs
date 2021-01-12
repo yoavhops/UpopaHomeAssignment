@@ -7,6 +7,13 @@ using Random = UnityEngine.Random;
 namespace Supersonic
 {
     public enum GameState { Start, Run, Pause, Over }
+    /// <summary>
+    /// Main class which controls and binds together asteroids context.
+    /// Responsible for transitioning between game states, spawning new asteroids
+    /// and dealing with players.
+    /// TODO: Decouple as much logic as possible into a new class (AsteroidsModel)
+    /// in order to follow the humble object pattern.
+    /// </summary>
     public class Asteroids : MonoBehaviour
     {
         public delegate void StateChanged(GameState state);
@@ -30,7 +37,6 @@ namespace Supersonic
         private ExplodablePool explodables;
         private float timeUntilNextSpawn;
         
-
 
         void Start()
         {
@@ -172,6 +178,7 @@ namespace Supersonic
             ChangeState(GameState.Over);
         }
 
+
         public void ChangeState(GameState state)
         {
             switch(state)
@@ -184,6 +191,7 @@ namespace Supersonic
             
             StateChangedEvent?.Invoke(state);
         }
+
 
         private void ResetGame()
         {
@@ -209,6 +217,7 @@ namespace Supersonic
             disk.SetInt("players", Players.Count);
             for (int i = 0; i < Players.Count; i++)
             {
+                // player
                 Player player = Players[i];
                 disk.SetFloat($"player{i}-health", player.Health);
                 disk.SetInt($"player{i}-points", player.Points);
@@ -252,6 +261,7 @@ namespace Supersonic
                 {
                     Players.Add(Instantiate(Players[0]));//TODO: need to add mirror handling
                 }
+                // player
                 Player player = Players[i];
                 player.gameObject.SetActive(true);
                 player.Health = disk.GetFloat($"player{i}-health");
@@ -304,6 +314,7 @@ namespace Supersonic
             }
         }
 
+
         private void SaveCyclicPool<T,K>(ICache<T> pool, string name) where T : K, ICyclic<K> where K : MonoBehaviour
         {
             var poolDeployed = pool.Deployed;
@@ -311,6 +322,7 @@ namespace Supersonic
             var deployed = new List<T>(poolDeployed);
             Debug.Log($"saving {deployed.Count}");
             disk.SetInt($"{name}s", deployed.Count);
+
             for (int i = 0; i < deployed.Count; i++)
             {
                 disk.SetFloat($"{name}{i}-positionX", deployed[i].transform.position.x);
@@ -348,7 +360,8 @@ namespace Supersonic
             }
         }
 
-        private void LoadCyclicPool<T,K,U>(ICache<T> cache, string name) where T : U, ICyclic<U> where K : Cyclical<U> where U : MonoBehaviour
+
+        private void LoadCyclicPool<T,K,U>(ICache<T> cache, string name) where T : U, ICyclic<U> where K : Cyclical<U> where U : MonoBehaviour, ICyclic<U>
         {
             LoadPool(cache, name);
 

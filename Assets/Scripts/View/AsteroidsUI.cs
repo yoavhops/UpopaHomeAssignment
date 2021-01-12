@@ -6,6 +6,9 @@ using UnityEngine.UI;
 
 namespace Supersonic
 {
+    /// <summary>
+    /// Main UI class for dealing with asteroids context UI behaviour.
+    /// </summary>
     public class AsteroidsUI : MonoBehaviour
     {
         [SerializeField]
@@ -15,6 +18,7 @@ namespace Supersonic
         private List<Player> players;
         [SerializeField]
         private Text gameOver;
+
 
         void Start()
         {
@@ -43,7 +47,6 @@ namespace Supersonic
                     playerUIs.ForEach(playerUI => playerUI.ResetHealth());
                     gameOver.gameObject.SetActive(false);
                     break;
-
             }
         }
     }

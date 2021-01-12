@@ -3,6 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 namespace Supersonic
 {
+    /// <summary>
+    /// Base class for anything that might hit a Shootable as a shot.
+    /// Register to ShotHitEvent in ordder to know when a shot hit something.
+    /// </summary>
     public class Shot : MonoBehaviour
     {
         public delegate void ShotHit(Shot shot, GameObject objectHit);
@@ -11,6 +15,7 @@ namespace Supersonic
         public float TimeAlive;
 
         private Coroutine enforceTimeAlive;
+
 
         private void Awake()
         {
@@ -36,7 +41,6 @@ namespace Supersonic
             gameObject.SetActive(false);
             Debug.Log($"{name} dead");
         }
-
 
 
         private void OnTriggerEnter(Collider other)

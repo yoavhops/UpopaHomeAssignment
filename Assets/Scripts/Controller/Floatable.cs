@@ -7,6 +7,7 @@ namespace Supersonic
     public class Floatable : MonoBehaviour
     {
         public Vector3 Direction;
+
         [SerializeField]
         private bool randomDirection;
         [SerializeField]
