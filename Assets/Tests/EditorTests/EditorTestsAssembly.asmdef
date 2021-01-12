@@ -2,7 +2,8 @@
     "name": "EditorTests",
     "references": [
         "UnityEngine.TestRunner",
-        "UnityEditor.TestRunner"
+        "UnityEditor.TestRunner",
+        "CodeAssembly"
     ],
     "includePlatforms": [
         "Editor"

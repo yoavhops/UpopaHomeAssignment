@@ -22,4 +22,12 @@ public class PlayerSettings : ScriptableObject
     public float LifeLoseIncreaseRate { get; private set; }
     [field: SerializeField]
     public float LifeLoseIncreaseTime { get; private set; }
+
+    public void MockSettings(float movementSpeed = 3, float rotationSpeed = 50, float torqueDrag = 1.5f, float torqueClamp = 50)
+    {
+        MovementSpeed = movementSpeed;
+        RotationSpeed = rotationSpeed;
+        TorqueDrag = torqueDrag;
+        TorqueClamp = torqueClamp;
+    }
 }
