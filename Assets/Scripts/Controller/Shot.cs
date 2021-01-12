@@ -33,20 +33,17 @@ namespace Supersonic
             enforceTimeAlive = StartCoroutine(EnforceTimeAlive(TimeAlive));
         }
 
+
         IEnumerator EnforceTimeAlive(float time)
         {
-            
             yield return new WaitForSeconds(time);
             ShotHitEvent?.Invoke(this, null);
             gameObject.SetActive(false);
-            Debug.Log($"{name} dead");
         }
 
 
         private void OnTriggerEnter(Collider other)
         {
-            Debug.Log($"{name} hit {other.gameObject.name}");
-            
             Shootable shootable = other.gameObject.GetComponent<Shootable>();
             if (shootable != null)
             {

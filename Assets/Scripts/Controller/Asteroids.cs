@@ -95,12 +95,19 @@ namespace Supersonic
                 return;
             }
             Vector3 position = new Vector3(Random.Range(0, Playground.Size.x), Random.Range(0, Playground.Size.y), Random.Range(0, 0));
-            SetupShootable(asteroidPrefab).transform.position = position;
+            var shootable = SetupShootable(asteroidPrefab);
+            shootable.transform.position = position;
+            var floatable = shootable.GetComponent<Floatable>();
+            if (floatable != null)
+            {
+                floatable.RandomDirection = true;
+            }
         }
 
 
         private Shootable SetupShootable(Shootable shootable, bool deploy = true)
         {
+
             switch (shootable)
             {
                 case Lootable lootable:
@@ -356,6 +363,7 @@ namespace Supersonic
                     direction.x = disk.GetFloat($"{name}{i}-floatX");
                     direction.y = disk.GetFloat($"{name}{i}-floatY");
                     floatable.Direction = direction;
+                    floatable.RandomDirection = false;
                 }
             }
         }

@@ -1,13 +1,15 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
-// Solely created for changing appearance of text
-public class HealthBar : ProgressBar
+namespace Supersonic
 {
-    protected override void UpdateValue(float val)
+    // Solely created for changing appearance of text
+    public class HealthBar : ProgressBar
     {
-        base.UpdateValue(val);
-        txtTitle.text = Title + "\n" + (int)(val * 10f);
+        protected override void UpdateValue(float val)
+        {
+            base.UpdateValue(val);
+            txtTitle.text = Title + "\n" + (int)(val * 10f);
+        }
     }
 }

@@ -126,7 +126,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Direction: {x: 0, y: 0, z: 0}
-  randomDirection: 1
+  RandomDirection: 1
   floatSpeed: 3
 --- !u!114 &-6441491783543729246
 MonoBehaviour:
@@ -140,7 +140,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d88d6bc197cd80d42b90d9cc5fe20a64, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Cyclical: {fileID: -6478772349370492139}
   RewardParent: {fileID: 0}
   loot: {fileID: 11400000, guid: c51122af20547d34595834403c283ed1, type: 2}
 --- !u!114 &-6478772349370492139
@@ -159,3 +158,4 @@ MonoBehaviour:
   Playground: {fileID: 0}
   IsMirrorObject: 0
   <Show>k__BackingField: 0
+  offset: {x: 0, y: 0, z: 0}

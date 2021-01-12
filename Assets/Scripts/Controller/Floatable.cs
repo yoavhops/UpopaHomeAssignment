@@ -8,15 +8,14 @@ namespace Supersonic
     {
         public Vector3 Direction;
 
-        [SerializeField]
-        private bool randomDirection;
+        public bool RandomDirection;
         [SerializeField]
         private float floatSpeed;
 
 
         void Awake()
         {
-            if (randomDirection)
+            if (RandomDirection)
             {
                 Direction = new Vector3(Random.Range(-1f, 1f), Random.Range(-1f, 1f)).normalized;
             }
