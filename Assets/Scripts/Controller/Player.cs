@@ -51,7 +51,7 @@ namespace Supersonic
 
         void Update()
         {
-            if (!IsMirror)
+            if (!IsMirror && Health > 0)
             {
                 var deltaTime = Time.deltaTime;
                 if (Input.GetKey(KeyCode.W))

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Title: Health
-  TitleColor: {r: 0.94117653, g: 0.94117653, b: 0.94117653, a: 1}
+  TitleColor: {r: 0, g: 0, b: 0, a: 1}
   TitleFont: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
   TitleFontSize: 40
   BarColor: {r: 0.05724919, g: 1, b: 0, a: 1}
@@ -39,17 +39,17 @@ PrefabInstance:
     - target: {fileID: 114165064244077878, guid: 5eefba205a58c8c4a937c97b87c185a3,
         type: 3}
       propertyPath: m_Color.r
-      value: 0.94117653
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 114165064244077878, guid: 5eefba205a58c8c4a937c97b87c185a3,
         type: 3}
       propertyPath: m_Color.g
-      value: 0.94117653
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 114165064244077878, guid: 5eefba205a58c8c4a937c97b87c185a3,
         type: 3}
       propertyPath: m_Color.b
-      value: 0.94117653
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 114165064244077878, guid: 5eefba205a58c8c4a937c97b87c185a3,
         type: 3}

@@ -79,33 +79,33 @@ namespace Supersonic
             bool moveToMirror = false;
             Vector3 position = transform.position;
 
-            if (position.x > middle.x + width.x / 2)
+            if (position.x > middle.x + width.x / 2 + margin.x)
             {
-                if (position.x > middle.x + width.x / 2 + margin.x)
+                if (position.x > middle.x + width.x / 2)
                 {
                     moveToMirror = true;
                 }
                 boundariesInContact.Add(Boundary.Right);
             }
-            else if (position.x < middle.x - width.x / 2)
+            else if (position.x < middle.x - width.x / 2 - margin.x)
             {
-                if (position.x > middle.x - width.x / 2 - margin.x)
+                if (position.x < middle.x - width.x / 2)
                 {
                     moveToMirror = true;
                 }
                 boundariesInContact.Add(Boundary.Left);
             }
-            if (position.y > middle.y + height.y / 2)
+            if (position.y > middle.y + height.y / 2 + margin.y)
             {
-                if (position.y > middle.y + height.y / 2 + margin.y)
+                if (position.y > middle.y + height.y / 2 )
                 {
                     moveToMirror = true;
                 }
                 boundariesInContact.Add(Boundary.Upper);
             }
-            else if (position.y < middle.y - height.y / 2)
+            else if (position.y < middle.y - height.y / 2 - margin.y)
             {
-                if (position.y < middle.y - height.y / 2 - margin.y)
+                if (position.y < middle.y - height.y / 2 )
                 {
                     moveToMirror = true;
                 }

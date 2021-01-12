@@ -50,7 +50,7 @@ public class ProgressBar : MonoBehaviour
 
     private void Awake()
     {
-        bar = transform.Find("Bar").GetComponent<Image>();
+        bar = transform.Find("BarBackground").transform.Find("Bar").GetComponent<Image>();
         barBackground = GetComponent<Image>();
         txtTitle = transform.Find("Text").GetComponent<Text>();
         barBackground = transform.Find("BarBackground").GetComponent<Image>();

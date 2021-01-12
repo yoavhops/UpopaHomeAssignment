@@ -177,7 +177,6 @@ namespace Supersonic
             switch(state)
             {
                 case GameState.Over:
-                    //ResetGame();
                     break;
                     
             }

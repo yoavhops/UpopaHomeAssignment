@@ -7,6 +7,6 @@ public class HealthBar : ProgressBar
     protected override void UpdateValue(float val)
     {
         base.UpdateValue(val);
-        txtTitle.text = Title + "\n" + (int)val * 10;
+        txtTitle.text = Title + "\n" + (int)(val * 10f);
     }
 }
