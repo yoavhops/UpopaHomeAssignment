@@ -7,7 +7,7 @@ namespace Supersonic
 {
     /// <summary>
     /// Generic component which adds cyclical behaviour to objects that
-    /// allows circumnaviating a referenced Playground object.
+    /// allows circumnavigating a referenced Playground object.
     /// Using a Mirror field, the Cyclical component will make sure to update whichever
     /// component T stands for and update it's Mirror field as well as it's own.
     /// </summary>
@@ -22,132 +22,74 @@ namespace Supersonic
 
         [SerializeField]
         private Vector3 offset;
-        private Vector3 height, width, margin, middle;
-        private HashSet<Boundary> boundariesInContact = new HashSet<Boundary>();
+        private Vector3 size, halfSize, margin, middle;
+        private Vector3 mirrorPos;
 
 
         private void Awake()
         {
             Show = false;
-            if (IsMirrorObject)
-            {
-                gameObject.name += "-Mirror";
-            }
-            ICyclic<T> cyclic = GetComponent<ICyclic<T>>();
-            cyclic.IsMirror = IsMirrorObject;
-            cyclic.Mirror = Mirror;
+            GetComponent<ICyclic<T>>()?.Setup(Mirror, IsMirrorObject);
         }
 
 
         void Start()
         {
-            if (!IsMirrorObject)
-            {
-                Mirror.gameObject.SetActive(Show);
-            }
-            height = new Vector3(0, Playground.Size.y, 0);
-            width = new Vector3(Playground.Size.x, 0, 0);
+            size = Playground.Size;
+            halfSize = size / 2;
             margin = Playground.Margin;
-            middle = Playground.Middle + offset;
+            middle = Playground.Middle;
         }
 
 
         void Update()
         {
-            if (!IsMirrorObject)
+            Vector3 distance = middle - transform.position;
+            distance.x = Math.Abs(distance.x);
+            distance.y = Math.Abs(distance.y);
+            mirrorPos = transform.position;
+            if (distance.x > halfSize.x + margin.x)
             {
-                if (UpdateBoundaries())
-                {
-                    transform.position = MirrorPosition();
-                    Show = false;
-                    boundariesInContact.Clear();
-                }
+                mirrorPos.x = transform.position.x < middle.x ? size.x + transform.position.x : transform.position.x - size.x;
+                Show = true;
+            }
+            if (distance.y > halfSize.y + margin.y)
+            {
+                mirrorPos.y = transform.position.y < middle.y ? size.y + transform.position.y : transform.position.y - size.y;
+                Show = true;
+            }
 
-                if (Show)
+
+            if (Show)
+            {
+                if (distance.x > halfSize.x  || distance.y > halfSize.y)
                 {
-                    if (boundariesInContact.Count == 0 || boundariesInContact.Count > 2)
-                    {
-                        throw new ArgumentOutOfRangeException($"Illeal amount of boundaries to mirror over the cyclical range: {boundariesInContact.Count}");
-                    }
-                    Mirror.gameObject.SetActive(true);
-                    Mirror.transform.position = MirrorPosition();
-                    Mirror.transform.rotation = transform.rotation;
+                    transform.position = mirrorPos;
+                    Mirror.gameObject.SetActive(false);
+                    Show = false;
                 }
                 else
                 {
-                    Mirror.gameObject.SetActive(false);
+                    Mirror.transform.rotation = transform.rotation;
+                    Mirror.transform.position = mirrorPos;
+                    Mirror.gameObject.SetActive(true);
                 }
+                Debug.Log($"{name} distance: {distance}  position: {transform.position}  mirror: {mirrorPos}");
             }
         }
 
-
-        private bool UpdateBoundaries()
+        public void Setup(T mirror, bool isMirror, Playground playground)
         {
-            boundariesInContact.Clear();
-            bool moveToMirror = false;
-            Vector3 position = transform.position;
+            Mirror = mirror;
+            IsMirrorObject = isMirror;
+            GetComponent<ICyclic<T>>()?.Setup(Mirror, IsMirrorObject);
+            Playground = playground;
 
-            if (position.x > middle.x + width.x / 2 + margin.x)
+            if (isMirror)
             {
-                if (position.x > middle.x + width.x / 2)
-                {
-                    moveToMirror = true;
-                }
-                boundariesInContact.Add(Boundary.Right);
+                enabled = false;
+                gameObject.SetActive(false);
             }
-            else if (position.x < middle.x - width.x / 2 - margin.x)
-            {
-                if (position.x < middle.x - width.x / 2)
-                {
-                    moveToMirror = true;
-                }
-                boundariesInContact.Add(Boundary.Left);
-            }
-            if (position.y > middle.y + height.y / 2 + margin.y)
-            {
-                if (position.y > middle.y + height.y / 2 )
-                {
-                    moveToMirror = true;
-                }
-                boundariesInContact.Add(Boundary.Upper);
-            }
-            else if (position.y < middle.y - height.y / 2 - margin.y)
-            {
-                if (position.y < middle.y - height.y / 2 )
-                {
-                    moveToMirror = true;
-                }
-                boundariesInContact.Add(Boundary.Lower);
-            }
-            Show = boundariesInContact.Count > 0;
-            return moveToMirror;
-        }
-
-
-        private Vector3 MirrorPosition()
-        {
-            Vector3 position = transform.position;
-            foreach (Boundary boundary in boundariesInContact)
-            {
-                switch (boundary)
-                {
-                    case Boundary.Upper:
-                        position -= height;
-                        break;
-                    case Boundary.Lower:
-                        position += height;
-                        break;
-                    case Boundary.Left:
-                        position += width;
-                        break;
-                    case Boundary.Right:
-                        position -= width;
-                        break;
-                    default:
-                        throw new ArgumentException($"Illegal boundary");
-                }
-            }
-            return position;
         }
     }
 }

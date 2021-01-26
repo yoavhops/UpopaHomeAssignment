@@ -26,6 +26,14 @@ public class PlayerSettings : ScriptableObject
     public float LifeLoseIncreaseRate { get; private set; }
     [field: SerializeField]
     public float LifeLoseIncreaseTime { get; private set; }
+    [field: SerializeField]
+    public KeyCode Forward { get; private set; }
+    [field: SerializeField]
+    public KeyCode Left { get; private set; }
+    [field: SerializeField]
+    public KeyCode Right { get; private set; }
+    [field: SerializeField]
+    public KeyCode Shoot { get; private set; }
 
     // Used for testing
     public void MockSettings(float movementSpeed = 3, float rotationSpeed = 50, float torqueDrag = 1.5f, float torqueClamp = 50)

@@ -11,9 +11,8 @@ namespace Supersonic
     {
         public delegate void ShootableShot(Shootable wasShot, Shot shot);
         public event ShootableShot OnShotEvent;
-        public Shootable Mirror { get; set; }
-        public bool IsMirror { get; set; }
-        public bool IsOppositeShown { get; set; }
+        public Shootable Mirror { get; private set; }
+        public bool IsMirror { get; private set; }
 
 
         virtual public void OnShot(Shot shot)
@@ -27,7 +26,7 @@ namespace Supersonic
         {
             gameObject.SetActive(false);
             OnShot(shot);
-            if (IsOppositeShown)
+            if (Mirror != null)
             {
                 Mirror.OnShot(shot);
                 Mirror.gameObject.SetActive(false);
@@ -43,6 +42,12 @@ namespace Supersonic
             {
                 WasShot(shot);
             }
+        }
+
+        public void Setup(Shootable mirror, bool isMirror)
+        {
+            Mirror = mirror;
+            IsMirror = isMirror;
         }
     }
 }

@@ -17,8 +17,8 @@ namespace Supersonic
         public event HealthChanged HealthChangedEvent;
         public int Points { get => points; set { points = value; PointsChangedEvent?.Invoke(points); } }
         public float Health { get => health; set { health = value; HealthChangedEvent(health); } }
-        public Player Mirror { get; set; }
-        public bool IsMirror { get; set; }
+        public Player Mirror { get; private set; }
+        public bool IsMirror { get; private set; }
         public bool IsOppositeShown { get; set; }
         public ShotPool ShotsPool;
 
@@ -53,22 +53,22 @@ namespace Supersonic
             if (!IsMirror && Health > 0)
             {
                 var deltaTime = Time.deltaTime;
-                if (Input.GetKey(KeyCode.W))
+                if (Input.GetKey(PlayerSettings.Forward))
                 {
                     playerSimulation.MoveForward(deltaTime);
                 }
-                if (Input.GetKey(KeyCode.A))
+                if (Input.GetKey(PlayerSettings.Left))
                 {
                     playerSimulation.Rotate(Vector3.forward, deltaTime);
                 }
-                else if (Input.GetKey(KeyCode.D))
+                else if (Input.GetKey(PlayerSettings.Right))
                 {
                     playerSimulation.Rotate(Vector3.back, deltaTime);
                 }
 
                 playerSimulation.UpdateRotation(deltaTime);
 
-                if (Input.GetKeyDown(KeyCode.Space))
+                if (Input.GetKeyDown(PlayerSettings.Shoot))
                 {
                     Shoot();
                 }
@@ -133,6 +133,12 @@ namespace Supersonic
         public void AwardHealth(HealthReward reward)
         {
             Health += reward.HealthAward;
+        }
+
+        public void Setup(Player mirror, bool isMirror)
+        {
+            Mirror = mirror;
+            IsMirror = isMirror;
         }
     }
 }

@@ -113,6 +113,7 @@ namespace Supersonic
 
         private Shootable SetupShootable(Shootable shootable, bool deploy = true)
         {
+            Shootable deployedShootable = null, shootableMirror = null;
 
             switch (shootable)
             {
@@ -120,17 +121,14 @@ namespace Supersonic
                     if (deploy)
                     {
                         lootable = lootables.Deploy();
+                        deployedShootable = lootable;
                         Cyclical<Shootable> cylic = lootable.GetComponent<Cyclical<Shootable>>();
                         if (cylic != null)
                         {
-                            cylic.IsMirrorObject = false;
-                            cylic.Playground = Playground;
                             Lootable mirror = lootables.Deploy();
-                            cylic.Mirror = mirror;
+                            shootableMirror = mirror;
+
                             Cyclical<Shootable> mirrorCyclic = mirror.GetComponent<Cyclical<Shootable>>();
-                            mirrorCyclic.Mirror = lootable;
-                            mirrorCyclic.IsMirrorObject = true;
-                            mirrorCyclic.Playground = Playground;
                             mirror.OnShotEvent += (wasShot, shot) =>
                             {
                                 lootables.Undeploy(wasShot as Lootable);
@@ -142,32 +140,25 @@ namespace Supersonic
                     {
                         lootables.AddDeployed(lootable);
                     }
+
                     lootable.RewardParent = rewardParent;
                     lootable.OnShotEvent += (wasShot, shot) =>
                     {
                         lootables.Undeploy(wasShot as Lootable);
                     };
-                    return lootable;
+                    break;
 
                 case Explodable explodable:
                     if (deploy)
                     {
                         explodable = explodables.Deploy();
-                        Cyclical<Shootable> cylic = explodable.GetComponent<Cyclical<Shootable>>();
-                        if (cylic != null)
+                        deployedShootable = explodable;
+
+                        Cyclical<Shootable> cyclic = explodable.GetComponent<Cyclical<Shootable>>();
+                        if (cyclic != null)
                         {
-                            cylic.Playground = Playground;
-                            cylic.IsMirrorObject = false;
                             Explodable mirror = explodables.Deploy();
-                            cylic.Mirror = mirror;
-                            Cyclical<Shootable> mirrorCyclic = mirror.GetComponent<Cyclical<Shootable>>();
-                            mirrorCyclic.Mirror = explodable;
-                            mirrorCyclic.IsMirrorObject = true;
-                            mirrorCyclic.Playground = Playground;
-                            mirror.OnShotEvent += (wasShot, shot) =>
-                            {
-                                explodables.Undeploy(wasShot as Explodable);
-                            };
+                            shootableMirror = mirror;
                         }
                     }
                     else
@@ -178,11 +169,27 @@ namespace Supersonic
                     {
                         explodables.Undeploy(wasShot as Explodable);
                     };
-                    return explodable;
-
+                    break;
                 default:
                     throw new ArgumentException($"Unreconized type of Shootable.");
             }
+
+
+
+            if (shootableMirror != null)
+            {
+                deployedShootable.GetComponent<Cyclical<Shootable>>().Setup(shootableMirror, false, Playground);
+                shootableMirror.GetComponent<Cyclical<Shootable>>().Setup(deployedShootable, true, Playground);
+                //cyclic.Setup(shootableMirror, false, Playground);
+
+                //cyclic.Mirror = shootableMirror;
+                //Cyclical<Shootable> mirrorCyclic = shootableMirror.GetComponent<Cyclical<Shootable>>();
+                //mirrorCyclic.Mirror = deployedShootable;
+                //mirrorCyclic.enabled = false;
+                //cyclic.IsMirrorObject = false;
+            }
+
+            return deployedShootable;
         }
 
 

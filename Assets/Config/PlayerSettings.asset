@@ -16,7 +16,11 @@ MonoBehaviour:
   <RotationSpeed>k__BackingField: 100
   <TorqueDrag>k__BackingField: 1.5
   <TorqueClamp>k__BackingField: 50
-  <LifeLosePerSecond>k__BackingField: 20
+  <LifeLosePerSecond>k__BackingField: 1
   <StartingLife>k__BackingField: 1000
   <LifeLoseIncreaseRate>k__BackingField: 5
   <LifeLoseIncreaseTime>k__BackingField: 5
+  <Forward>k__BackingField: 119
+  <Left>k__BackingField: 97
+  <Right>k__BackingField: 100
+  <Shoot>k__BackingField: 32

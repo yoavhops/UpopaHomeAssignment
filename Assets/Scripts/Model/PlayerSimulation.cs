@@ -29,7 +29,7 @@ namespace Supersonic
             transform.LocalPosition = transform.LocalPosition + transform.Forward.normalized * movementSpeed * time;
         }
 
-
+        // Leaving direction a vector just in-case euler-angles directional torque is required in the future.
         public void Rotate(Vector3 direction, float time)
         {
             if (direction == Vector3.forward)
