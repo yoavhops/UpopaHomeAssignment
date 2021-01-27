@@ -44,25 +44,20 @@ namespace Supersonic
 
         void Update()
         {
-            Vector3 distance = middle - transform.position;
+            Vector3 pos = transform.position;
+            Vector3 distance = middle - pos;
             distance.x = Math.Abs(distance.x);
             distance.y = Math.Abs(distance.y);
-            mirrorPos = transform.position;
-            if (distance.x > halfSize.x + margin.x)
-            {
-                mirrorPos.x = transform.position.x < middle.x ? size.x + transform.position.x : transform.position.x - size.x;
-                Show = true;
-            }
-            if (distance.y > halfSize.y + margin.y)
-            {
-                mirrorPos.y = transform.position.y < middle.y ? size.y + transform.position.y : transform.position.y - size.y;
-                Show = true;
-            }
+            mirrorPos = pos;
 
-
-            if (Show)
+            bool xAxis = distance.x > halfSize.x ;
+            bool yAxis = distance.y > halfSize.y ;
+            if (xAxis || yAxis)
             {
-                if (distance.x > halfSize.x  || distance.y > halfSize.y)
+                mirrorPos.x = pos.x + (size.x - ((int)((pos.x + halfSize.x + margin.x) / size.x)) * size.x * 2) * Convert.ToInt32(xAxis);
+                mirrorPos.y = pos.y + (size.y - ((int)((pos.y + halfSize.y + margin.y) / size.y)) * size.y * 2) * Convert.ToInt32(yAxis);
+                Show = true;
+                if (distance.x > halfSize.x + margin.x || distance.y > halfSize.y + margin.y)
                 {
                     transform.position = mirrorPos;
                     Mirror.gameObject.SetActive(false);

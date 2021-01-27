@@ -18,4 +18,4 @@ MonoBehaviour:
   <SpawnProbabilities>k__BackingField: 190000003c000000
   <AsteroidExplosionRadius>k__BackingField: 3
   <AsteroidSpawnRate>k__BackingField: 1.5
-  <SpawnAsteroid>k__BackingField: 1
+  <SpawnAsteroid>k__BackingField: 0
