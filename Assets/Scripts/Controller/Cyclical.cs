@@ -23,7 +23,7 @@ namespace Supersonic
         [SerializeField]
         private Vector3 offset;
         private Vector3 size, halfSize, margin, middle;
-        private Vector3 mirrorPos;
+        private Vector3 mirrorPos, pos, distance;
 
 
         private void Awake()
@@ -44,8 +44,8 @@ namespace Supersonic
 
         void Update()
         {
-            Vector3 pos = transform.position;
-            Vector3 distance = middle - pos;
+            pos = transform.position;
+            distance = middle - pos;
             distance.x = Math.Abs(distance.x);
             distance.y = Math.Abs(distance.y);
             mirrorPos = pos;
@@ -69,7 +69,7 @@ namespace Supersonic
                     Mirror.transform.position = mirrorPos;
                     Mirror.gameObject.SetActive(true);
                 }
-                Debug.Log($"{name} distance: {distance}  position: {transform.position}  mirror: {mirrorPos}");
+                //Debug.Log($"{name} distance: {distance}  position: {transform.position}  mirror: {mirrorPos}");
             }
         }
 
